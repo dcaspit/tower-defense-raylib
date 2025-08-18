@@ -15,6 +15,7 @@ function main() {
   const towerOne = new Tower(160, 180);
   const towerTwo = new Tower(160, 380);
   const towerThree = new Tower(460, 180);
+  const towers: Tower[] = [towerOne, towerTwo, towerThree];
 
   while (!r.WindowShouldClose()) {
     r.BeginDrawing();
@@ -25,15 +26,11 @@ function main() {
     map.drawMap();
     let enemies = waveMgr.drawWave();
 
-    towerOne.checkIfEnemyWithinTowerRange(enemies[0].pos);
-    towerTwo.checkIfEnemyWithinTowerRange(enemies[0].pos);
-    towerThree.checkIfEnemyWithinTowerRange(enemies[0].pos);
-    towerOne.updateProjectile(enemies[0].pos);
-    towerTwo.updateProjectile(enemies[0].pos);
-    towerThree.updateProjectile(enemies[0].pos);
-    towerOne.draw();
-    towerTwo.draw();
-    towerThree.draw();
+    towers.forEach((tower) => {
+      tower.checkIfEnemyWithinTowerRange(enemies[0].pos);
+      tower.updateProjectile(enemies[0].pos);
+      tower.draw();
+    });
 
     r.EndDrawing();
   }
