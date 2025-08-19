@@ -28,32 +28,33 @@ export class Tower {
     const dx = enemy.x - this.position.x;
     const dy = enemy.y - this.position.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    console.log("distance", distance);
     this.shouldShot = distance <= 100;
   }
 
   updateProjectile(enemy: r.Vector2) {
     if (!this.shouldShot && !this.projectileFired()) return;
 
-    console.log("projectile:", this.projectile);
-    console.log("enemyPos:", enemy);
-
-    const dx = enemy.x - this.projectile.x;
-    const dy = enemy.y - this.projectile.y;
-
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    // Check if projectile reached target (optional)
-    if (distance < 5) {
+    // Check if projectile collides with enemy rectangle (10x10)
+    if (
+      this.projectile.x + 5 >= enemy.x &&
+      this.projectile.x - 5 <= enemy.x + 10 &&
+      this.projectile.y + 5 >= enemy.y &&
+      this.projectile.y - 5 <= enemy.y + 10
+    ) {
       // Hit the target, handle collision
       this.resetProjectile();
       this.shouldShot = false;
       return;
     }
 
+    const dx = enemy.x - this.projectile.x;
+    const dy = enemy.y - this.projectile.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
     const directionX = dx / distance;
     const directionY = dy / distance;
 
-    const projectileSpeed = 1; // adjust speed as needed
+    const projectileSpeed = 1.2; // adjust speed as needed
 
     // Move projectile using the calculated direction
     this.projectile.x += directionX * projectileSpeed;
