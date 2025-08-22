@@ -9,7 +9,7 @@ function main() {
 
   r.InitWindow(screenWidth, screenHeight, "Tower Defense");
   r.SetTargetFPS(60);
-
+  
   const map = new GameMap();
   const waveMgr = new WaveManager(map.enemyPath);
   const towerOne = new Tower(160, 180);
