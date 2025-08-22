@@ -1,4 +1,4 @@
-import r from "raylib";
+import r, { MOUSE_BUTTON_LEFT } from "raylib";
 import { screenHeight, screenWidth } from "../utils/consts";
 import { main_map } from "./maps";
 
@@ -8,10 +8,80 @@ const boxHeight = 50;
 export default class GameMap {
   enemyPath: r.Vector2[];
   enemyPathIntialized: boolean = false;
+  mouseClick: (pos: r.Vector2) => void;
 
-  constructor() {
+  constructor(mouseClick: (pos: r.Vector2) => void) {
     this.enemyPath = [];
+    this.mouseClick = mouseClick;
     this.parseEnemyPath();
+  }
+
+  drawMap(pauseState: boolean) {
+    for (let row = 0; row < main_map.length; row++) {
+      for (let col = 0; col < main_map[row].length; col++) {
+        let color: r.Color = r.GRAY;
+        if (main_map[row][col] === 1) {
+          color = r.GREEN;
+        } else if (main_map[row][col] === 2) {
+          // Path
+          color = r.BROWN;
+        } else if (main_map[row][col] === 3) {
+          color = r.BLUE;
+        } else if (main_map[row][col] === 4) {
+          color = r.GRAY;
+        }
+
+        r.DrawRectangle(
+          col * boxWidth,
+          row * boxHeight,
+          boxWidth,
+          boxHeight,
+          color,
+        );
+
+        if (color === r.GREEN) {
+          // Check if mouse is hovering over this rectangle
+          if (this.isMouseInRec(col, row)) {
+            // Draw a semi-transparent white overlay for highlight
+            r.DrawRectangle(
+              col * boxWidth,
+              row * boxHeight,
+              boxWidth,
+              boxHeight,
+              { r: 255, g: 255, b: 255, a: 64 }, // Semi-transparent white
+            );
+
+            if (r.IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+              this.mouseClick({ x: col * boxWidth, y: row * boxHeight });
+            }
+          }
+        }
+        if (pauseState) {
+          r.DrawRectangleLines(
+            col * boxWidth,
+            row * boxHeight,
+            boxWidth,
+            boxHeight,
+            r.BLACK,
+          );
+        }
+      }
+    }
+  }
+
+  isMouseInRec(col: number, row: number): boolean {
+    let mouseX = r.GetMouseX();
+    let mouseY = r.GetMouseY();
+    let startBoxX = col * boxWidth;
+    let endBoxX = startBoxX + boxWidth;
+    let startBoxY = row * boxHeight;
+    let endBoxY = startBoxY + boxHeight;
+    return (
+      mouseX >= startBoxX &&
+      mouseX <= endBoxX &&
+      mouseY >= startBoxY &&
+      mouseY <= endBoxY
+    );
   }
 
   parseEnemyPath(): void {
@@ -97,31 +167,5 @@ export default class GameMap {
     }
 
     console.log(`Enemy path parsed with ${this.enemyPath.length} waypoints`);
-  }
-
-  drawMap() {
-    for (let row = 0; row < main_map.length; row++) {
-      for (let col = 0; col < main_map[row].length; col++) {
-        let color: r.Color = r.GRAY;
-        if (main_map[row][col] === 1) {
-          color = r.GREEN;
-        } else if (main_map[row][col] === 2) {
-          // Path
-          color = r.BROWN;
-        } else if (main_map[row][col] === 3) {
-          color = r.BLUE;
-        } else if (main_map[row][col] === 4) {
-          color = r.GRAY;
-        }
-
-        r.DrawRectangle(
-          col * boxWidth,
-          row * boxHeight,
-          boxWidth,
-          boxHeight,
-          color,
-        );
-      }
-    }
   }
 }

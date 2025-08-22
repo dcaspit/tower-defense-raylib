@@ -3,35 +3,47 @@ import GameMap from "./map/gameMap";
 import { screenHeight, screenWidth } from "./utils/consts";
 import WaveManager from "./wave/waveManager";
 import { Tower } from "./towers/tower";
+import { Panel } from "./panel/panel";
 
 function main() {
   let frameCounter: number = 0;
 
   r.InitWindow(screenWidth, screenHeight, "Tower Defense");
   r.SetTargetFPS(60);
-  
-  const map = new GameMap();
+
+  let pause = true;
+  const towers: Tower[] = [];
+  const addTower = (pos: r.Vector2) => {
+    towers.push(new Tower(pos.x + 15, pos.y + 15));
+  };
+  const map = new GameMap(addTower);
+  const onStart = () => {
+    pause = false;
+  };
+  const panel = new Panel(onStart);
   const waveMgr = new WaveManager(map.enemyPath);
-  const towerOne = new Tower(160, 180);
-  const towerTwo = new Tower(160, 380);
-  const towerThree = new Tower(460, 180);
-  const towers: Tower[] = [towerOne, towerTwo, towerThree];
 
   while (!r.WindowShouldClose()) {
     r.BeginDrawing();
     r.ClearBackground(r.RAYWHITE);
 
-    waveMgr.update();
+    map.drawMap(pause);
 
-    map.drawMap();
-    let enemies = waveMgr.drawWave();
+    if (!pause) {
+      waveMgr.update();
+      let enemies = waveMgr.drawWave();
+      towers.forEach((tower) => {
+        tower.checkIfEnemyWithinTowerRange(enemies[0].pos);
+        tower.updateProjectile(enemies[0].pos);
+        tower.draw();
+      });
+    } else {
+      towers.forEach((tower) => {
+        tower.draw();
+      });
+    }
 
-    towers.forEach((tower) => {
-      tower.checkIfEnemyWithinTowerRange(enemies[0].pos);
-      tower.updateProjectile(enemies[0].pos);
-      tower.draw();
-    });
-
+    panel.draw();
     r.EndDrawing();
   }
 
