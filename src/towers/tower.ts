@@ -23,6 +23,11 @@ export class Tower {
     );
     r.DrawCircle(this.projectile.x, this.projectile.y, 5, r.PURPLE);
   }
+  
+  reset() {
+    this.projectile.x = this.position.x;
+    this.projectile.y = this.position.y;
+  }
 
   checkIfEnemyWithinTowerRange(enemy: r.Vector2): void {
     const dx = enemy.x - this.position.x;

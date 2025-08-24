@@ -13,6 +13,11 @@ export default class WaveManager {
     this.enemies = [];
     this.enemies.push(new Enemy());
   }
+  
+  reset() {
+    this.currentPathIndex = 0;
+    this.frameCounter = 0;
+  }
 
   update() {
     this.frameCounter++;

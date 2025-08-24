@@ -17,11 +17,15 @@ function main() {
     towers.push(new Tower(pos.x + 15, pos.y + 15));
   };
   const map = new GameMap(addTower);
+  const waveMgr = new WaveManager(map.enemyPath);
   const onStart = () => {
     pause = !pause;
+    if(pause) {
+        waveMgr.reset();
+        towers.forEach((tower) => tower.reset());
+    }
   };
   const panel = new Panel(onStart);
-  const waveMgr = new WaveManager(map.enemyPath);
 
   while (!r.WindowShouldClose()) {
     r.BeginDrawing();
