@@ -14,15 +14,15 @@ function main() {
   let pause = true;
   const towers: Tower[] = [];
   const addTower = (pos: r.Vector2) => {
-    towers.push(new Tower(pos.x + 15, pos.y + 15));
+    towers.push(new Tower(pos.x, pos.y));
   };
   const map = new GameMap(addTower);
   const waveMgr = new WaveManager(map.enemyPath);
   const onStart = () => {
     pause = !pause;
-    if(pause) {
-        waveMgr.reset();
-        towers.forEach((tower) => tower.reset());
+    if (pause) {
+      waveMgr.reset();
+      towers.forEach((tower) => tower.reset());
     }
   };
   const panel = new Panel(onStart);
