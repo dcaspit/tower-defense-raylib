@@ -6,6 +6,7 @@ export class Tower {
   projectile: r.Vector2 = { x: 0, y: 0 };
   shouldShot: boolean = false;
   towerTexture: r.Texture;
+  projectileTexture: r.Texture;
 
   constructor(x: number, y: number) {
     this.position.x = x;
@@ -13,6 +14,7 @@ export class Tower {
     this.projectile.x = x;
     this.projectile.y = y;
     this.towerTexture = r.LoadTexture("assets/tower.png");
+    this.projectileTexture = r.LoadTexture("assets/projectile.png");
   }
 
   draw() {
@@ -43,7 +45,27 @@ export class Tower {
       100,
       r.ORANGE,
     );
-    r.DrawCircle(this.projectile.x, this.projectile.y, 5, r.PURPLE);
+    const projectileSize = 10;
+    const projectileDestRect = {
+      x: this.projectile.x - projectileSize / 2,
+      y: this.projectile.y - projectileSize / 2,
+      width: projectileSize,
+      height: projectileSize,
+    };
+    const projectileSourceRect = {
+      x: 0,
+      y: 0,
+      width: this.projectileTexture.width,
+      height: this.projectileTexture.height,
+    };
+    r.DrawTexturePro(
+      this.projectileTexture,
+      projectileSourceRect,
+      projectileDestRect,
+      { x: 0, y: 0 },
+      0,
+      r.WHITE,
+    );
   }
 
   reset() {
