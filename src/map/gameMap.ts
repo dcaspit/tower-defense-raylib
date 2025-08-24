@@ -39,7 +39,7 @@ export default class GameMap {
           color,
         );
 
-        if (color === r.GREEN) {
+        if (color === r.GREEN && pauseState) {
           // Check if mouse is hovering over this rectangle
           if (this.isMouseInRec(col, row)) {
             // Draw a semi-transparent white overlay for highlight

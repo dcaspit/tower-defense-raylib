@@ -2,24 +2,23 @@ import r from "raylib";
 
 export class Panel {
   position: r.Vector2 = { x: 500, y: 0 };
-  startBtn: r.Vector2 = { x: 530, y: 80 };
-  pauseBtn: r.Vector2 = { x: 530, y: 80 };
+  gameBtn: r.Vector2 = { x: 530, y: 80 };
 
-  constructor(private onStart: () => void) {}
+  constructor(private onClick: () => void) {}
 
-  draw() {
+  draw(paused: boolean) {
     r.DrawRectangle(this.position.x, this.position.y, 150, 500, r.DARKBROWN);
-    this.drawStartBtn();
-    this.handleStartBtnClick();
+    this.drawGameBtn(paused);
+    this.handleGameBtnClick();
   }
 
-  drawStartBtn() {
-    const isHovered = this.isMouseInStartBtn();
+  drawGameBtn(paused: boolean) {
+    const isHovered = this.isMouseInGameBtn();
 
     // Draw button background with hover effect
     if (isHovered) {
       // Draw a highlighted background when hovered
-      r.DrawRectangle(this.startBtn.x, this.startBtn.y, 80, 40, {
+      r.DrawRectangle(this.gameBtn.x, this.gameBtn.y, 80, 40, {
         r: 255,
         g: 0,
         b: 0,
@@ -27,36 +26,36 @@ export class Panel {
       });
     }
 
-    r.DrawRectangleLines(this.startBtn.x, this.startBtn.y, 80, 40, r.RED);
+    r.DrawRectangleLines(this.gameBtn.x, this.gameBtn.y, 80, 40, r.RED);
 
     // Change text color on hover for additional feedback
     const textColor = isHovered ? r.WHITE : r.RED;
     r.DrawText(
-      "Start",
-      this.startBtn.x + 25,
-      this.startBtn.y + 15,
+      paused ? "Start" : "Pause",
+      this.gameBtn.x + 25,
+      this.gameBtn.y + 15,
       12,
       textColor,
     );
   }
 
-  private isMouseInStartBtn(): boolean {
+  private isMouseInGameBtn(): boolean {
     const mouseX = r.GetMouseX();
     const mouseY = r.GetMouseY();
     return (
-      mouseX >= this.startBtn.x &&
-      mouseX <= this.startBtn.x + 80 &&
-      mouseY >= this.startBtn.y &&
-      mouseY <= this.startBtn.y + 40
+      mouseX >= this.gameBtn.x &&
+      mouseX <= this.gameBtn.x + 80 &&
+      mouseY >= this.gameBtn.y &&
+      mouseY <= this.gameBtn.y + 40
     );
   }
 
-  private handleStartBtnClick() {
+  private handleGameBtnClick() {
     if (
-      this.isMouseInStartBtn() &&
+      this.isMouseInGameBtn() &&
       r.IsMouseButtonPressed(r.MOUSE_BUTTON_LEFT)
     ) {
-      this.onStart();
+      this.onClick();
     }
   }
 }

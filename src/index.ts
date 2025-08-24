@@ -18,7 +18,7 @@ function main() {
   };
   const map = new GameMap(addTower);
   const onStart = () => {
-    pause = false;
+    pause = !pause;
   };
   const panel = new Panel(onStart);
   const waveMgr = new WaveManager(map.enemyPath);
@@ -43,7 +43,7 @@ function main() {
       });
     }
 
-    panel.draw();
+    panel.draw(pause);
     r.EndDrawing();
   }
 
