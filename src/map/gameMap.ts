@@ -14,7 +14,7 @@ export default class GameMap {
   constructor(mouseClick: (pos: r.Vector2) => void) {
     this.enemyPath = [];
     this.mouseClick = mouseClick;
-    this.baseTexture = r.LoadTexture("assets/base-bgless.png");
+    this.baseTexture = r.LoadTexture("assets/base.png");
     this.parseEnemyPath();
   }
 

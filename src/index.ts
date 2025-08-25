@@ -22,7 +22,7 @@ function main() {
     pause = !pause;
     if (pause) {
       waveMgr.reset();
-      towers.forEach((tower) => tower.reset());
+      towers.forEach((tower) => tower.resetProjectile());
     }
   };
   const panel = new Panel(onStart);

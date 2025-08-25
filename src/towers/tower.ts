@@ -7,6 +7,8 @@ export class Tower {
   shouldShot: boolean = false;
   towerTexture: r.Texture;
   projectileTexture: r.Texture;
+  towerSize = 50;
+  projectileSize = 10;
 
   constructor(x: number, y: number) {
     this.position.x = x;
@@ -18,12 +20,17 @@ export class Tower {
   }
 
   draw() {
-    const towerSize = 50;
+    this.drawTower();
+    this.drawTowerCircle();
+    this.drawProjectile();
+  }
+
+  drawTower() {
     const destRect = {
       x: this.position.x,
       y: this.position.y,
-      width: towerSize,
-      height: towerSize,
+      width: this.towerSize,
+      height: this.towerSize,
     };
     const sourceRect = {
       x: 0,
@@ -39,18 +46,15 @@ export class Tower {
       0,
       r.WHITE,
     );
-    r.DrawCircleLines(
-      this.position.x + towerSize / 2,
-      this.position.y + towerSize / 2,
-      100,
-      r.ORANGE,
-    );
-    const projectileSize = 10;
+
+  }
+  
+  drawProjectile() {
     const projectileDestRect = {
-      x: this.projectile.x - projectileSize / 2,
-      y: this.projectile.y - projectileSize / 2,
-      width: projectileSize,
-      height: projectileSize,
+      x: this.projectile.x - this.projectileSize / 2,
+      y: this.projectile.y - this.projectileSize / 2,
+      width: this.projectileSize,
+      height: this.projectileSize,
     };
     const projectileSourceRect = {
       x: 0,
@@ -68,11 +72,14 @@ export class Tower {
     );
   }
 
-  reset() {
-    this.projectile.x = this.position.x;
-    this.projectile.y = this.position.y;
+  drawTowerCircle() {
+    r.DrawCircleLines(
+      this.position.x + this.towerSize / 2,
+      this.position.y + this.towerSize / 2,
+      100,
+      r.ORANGE,
+    );
   }
-
   checkIfEnemyWithinTowerRange(enemy: r.Vector2): void {
     const dx = enemy.x - this.position.x;
     const dy = enemy.y - this.position.y;
