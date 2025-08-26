@@ -1,4 +1,5 @@
 import r from "raylib";
+import Enemy from "../enemies/enemy";
 
 export class Tower {
   power: number = 1;
@@ -81,32 +82,33 @@ export class Tower {
     );
   }
 
-  checkIfEnemyWithinTowerRange(enemy: r.Vector2): void {
-    const dx = enemy.x - this.position.x;
-    const dy = enemy.y - this.position.y;
+  checkIfEnemyWithinTowerRange(enemy: Enemy): void {
+    const dx = enemy.pos.x - this.position.x;
+    const dy = enemy.pos.y - this.position.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
     console.log(distance);
     this.shouldShot = distance <= 100;
   }
 
-  updateProjectile(enemy: r.Vector2) {
+  updateProjectile(enemy: Enemy) {
     if (!this.shouldShot && !this.projectileFired()) return;
 
     // Check if projectile collides with enemy rectangle (10x10)
     if (
-      this.projectile.x + 5 >= enemy.x &&
-      this.projectile.x - 5 <= enemy.x + 10 &&
-      this.projectile.y + 5 >= enemy.y &&
-      this.projectile.y - 5 <= enemy.y + 10
+      this.projectile.x + 5 >= enemy.pos.x &&
+      this.projectile.x - 5 <= enemy.pos.x + 10 &&
+      this.projectile.y + 5 >= enemy.pos.y &&
+      this.projectile.y - 5 <= enemy.pos.y + 10
     ) {
       // Hit the target, handle collision
+      enemy.takeDamage();
       this.resetProjectile();
       this.shouldShot = false;
       return;
     }
 
-    const dx = enemy.x - this.projectile.x;
-    const dy = enemy.y - this.projectile.y;
+    const dx = enemy.pos.x - this.projectile.x;
+    const dy = enemy.pos.y - this.projectile.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     const directionX = dx / distance;

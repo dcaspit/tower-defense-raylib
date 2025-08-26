@@ -40,7 +40,7 @@ export default class Enemy {
       width: 55,
       height: 7
     };
-    r.DrawRectangleRoundedLines(bgRec, 0.5, 8, 1, r.BLACK);
+    r.DrawRectangleRoundedLines(linesRec, 0.5, 8, 1, r.BLACK);
   }
 
   drawEnemyTexture() {

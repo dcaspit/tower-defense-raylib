@@ -37,8 +37,8 @@ function main() {
       waveMgr.update();
       let enemies = waveMgr.drawWave();
       towers.forEach((tower) => {
-        tower.checkIfEnemyWithinTowerRange(enemies[0].pos);
-        tower.updateProjectile(enemies[0].pos);
+        tower.checkIfEnemyWithinTowerRange(enemies[0]);
+        tower.updateProjectile(enemies[0]);
         tower.draw();
       });
     } else {
