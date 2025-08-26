@@ -8,13 +8,13 @@ export class Tower {
   towerTexture: r.Texture;
   projectileTexture: r.Texture;
   towerSize = 50;
-  projectileSize = 10;
+  projectileSize = 20;
 
   constructor(x: number, y: number) {
     this.position.x = x;
     this.position.y = y;
-    this.projectile.x = x;
-    this.projectile.y = y;
+    this.projectile.x = x + (this.towerSize/2);
+    this.projectile.y = y + (this.towerSize/2);
     this.towerTexture = r.LoadTexture("assets/tower.png");
     this.projectileTexture = r.LoadTexture("assets/projectile.png");
   }
@@ -26,13 +26,13 @@ export class Tower {
   }
 
   drawTower() {
-    const destRect = {
+    const dest = {
       x: this.position.x,
       y: this.position.y,
       width: this.towerSize,
       height: this.towerSize,
     };
-    const sourceRect = {
+    const src = {
       x: 0,
       y: 0,
       width: this.towerTexture.width,
@@ -40,8 +40,8 @@ export class Tower {
     };
     r.DrawTexturePro(
       this.towerTexture,
-      sourceRect,
-      destRect,
+      src,
+      dest,
       { x: 0, y: 0 },
       0,
       r.WHITE,
@@ -50,13 +50,13 @@ export class Tower {
   }
   
   drawProjectile() {
-    const projectileDestRect = {
+    const dest = {
       x: this.projectile.x - this.projectileSize / 2,
       y: this.projectile.y - this.projectileSize / 2,
       width: this.projectileSize,
       height: this.projectileSize,
     };
-    const projectileSourceRect = {
+    const src = {
       x: 0,
       y: 0,
       width: this.projectileTexture.width,
@@ -64,8 +64,8 @@ export class Tower {
     };
     r.DrawTexturePro(
       this.projectileTexture,
-      projectileSourceRect,
-      projectileDestRect,
+      src,
+      dest,
       { x: 0, y: 0 },
       0,
       r.WHITE,
@@ -80,10 +80,12 @@ export class Tower {
       r.ORANGE,
     );
   }
+
   checkIfEnemyWithinTowerRange(enemy: r.Vector2): void {
     const dx = enemy.x - this.position.x;
     const dy = enemy.y - this.position.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
+    console.log(distance);
     this.shouldShot = distance <= 100;
   }
 
@@ -119,13 +121,13 @@ export class Tower {
 
   projectileFired(): boolean {
     return (
-      this.projectile.x != this.position.x &&
-      this.projectile.y != this.position.y
+      this.projectile.x - (this.towerSize/2) != this.position.x &&
+      this.projectile.y - (this.towerSize/2) != this.position.y
     );
   }
 
   resetProjectile() {
-    this.projectile.x = this.position.x;
-    this.projectile.y = this.position.y;
+    this.projectile.x = this.position.x + (this.towerSize/2);
+    this.projectile.y = this.position.y + (this.towerSize/2);
   }
 }
