@@ -5,9 +5,9 @@ import { warn } from "console";
 export default class WaveManager {
   enemyPath: r.Vector2[];
   enemies: Enemy[];
-  currentPathIndex: number = 0;
   frameCounter: number = 0;
   framesPerMove: number = 60;
+  framesPasses: number = 0;
 
   constructor(enemyPath: r.Vector2[]) {
     this.enemyPath = enemyPath;
@@ -16,7 +16,9 @@ export default class WaveManager {
   }
   
   reset() {
-    this.currentPathIndex = 0;
+    this.enemies.forEach((enemy) => {
+      enemy.currentPathIndex = 0;
+    })
     this.frameCounter = 0;
   }
 
@@ -24,12 +26,17 @@ export default class WaveManager {
     this.frameCounter++;
 
     // Check if enough frames have passed to move
-    if (
-      this.frameCounter >= this.framesPerMove &&
-      this.currentPathIndex < this.enemyPath.length - 1
-    ) {
-      this.currentPathIndex++;
+    if (this.frameCounter >= this.framesPerMove) {
+      this.enemies.forEach((enemy) => {
+        if(enemy.currentPathIndex < this.enemyPath.length - 1){
+          enemy.currentPathIndex++;
+        }    
+      });
       this.frameCounter = 0;
+      this.framesPasses++;
+      if(this.framesPasses % 10 === 0) {
+        this.enemies.push(new Enemy());
+      }
       this.removeDeadEnemies();    
     }
   }
@@ -41,10 +48,14 @@ export default class WaveManager {
   drawWave(): Enemy[] {
     if(this.enemies.length === 0) return this.enemies;
     // Only draw if we have a valid position
-    if (this.currentPathIndex < this.enemyPath.length) {
-      const currentPos = this.getInterpolatedPosition();
-      this.enemies[0].draw(currentPos);
-    }
+    this.enemies.forEach((enemy) => {
+      
+      if (enemy.currentPathIndex < this.enemyPath.length) {
+        const currentPos = this.getInterpolatedPosition(enemy.currentPathIndex);
+        enemy.draw(currentPos);
+      }
+    });
+
 
     return this.enemies;
   }
@@ -55,14 +66,14 @@ export default class WaveManager {
   //When frameCounter = 0, t = 0 → enemy is at current waypoint
   //When frameCounter = 30, t = 0.5 → enemy is halfway between waypoints
   //When frameCounter = 60, t = 1 → enemy reaches next waypoint
-  private getInterpolatedPosition(): r.Vector2 {
+  private getInterpolatedPosition(currentPathIndex: number): r.Vector2 {
     // If we're at the last waypoint, just return it
-    if (this.currentPathIndex >= this.enemyPath.length - 1) {
-      return this.enemyPath[this.currentPathIndex];
+    if (currentPathIndex >= this.enemyPath.length - 1) {
+      return this.enemyPath[currentPathIndex];
     }
 
-    const currentWaypoint = this.enemyPath[this.currentPathIndex];
-    const nextWaypoint = this.enemyPath[this.currentPathIndex + 1];
+    const currentWaypoint = this.enemyPath[currentPathIndex];
+    const nextWaypoint = this.enemyPath[currentPathIndex + 1];
 
     // Calculate interpolation factor (0 to 1)
     const t = this.frameCounter / this.framesPerMove;

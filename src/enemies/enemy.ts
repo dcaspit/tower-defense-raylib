@@ -6,6 +6,7 @@ export default class Enemy {
   enemySize = 40;
   enemyTexture: r.Texture;
   health = 20;
+  currentPathIndex: number = 0;
 
   constructor() {
     this.enemyTexture = r.LoadTexture('assets/enemy.png');
