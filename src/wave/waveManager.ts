@@ -1,5 +1,6 @@
 import r from "raylib";
 import Enemy from "../enemies/enemy";
+import { warn } from "console";
 
 export default class WaveManager {
   enemyPath: r.Vector2[];
@@ -29,10 +30,16 @@ export default class WaveManager {
     ) {
       this.currentPathIndex++;
       this.frameCounter = 0;
+      this.removeDeadEnemies();    
     }
   }
 
+  removeDeadEnemies() {
+    this.enemies = this.enemies.filter(enemy => enemy.health > 0);
+  }
+  
   drawWave(): Enemy[] {
+    if(this.enemies.length === 0) return this.enemies;
     // Only draw if we have a valid position
     if (this.currentPathIndex < this.enemyPath.length) {
       const currentPos = this.getInterpolatedPosition();
