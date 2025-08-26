@@ -10,12 +10,13 @@ export class Tower {
   projectileTexture: r.Texture;
   towerSize = 50;
   projectileSize = 20;
+  currentTarget: Enemy | null = null;
 
   constructor(x: number, y: number) {
     this.position.x = x;
     this.position.y = y;
-    this.projectile.x = x + (this.towerSize/2);
-    this.projectile.y = y + (this.towerSize/2);
+    this.projectile.x = x + this.towerSize / 2;
+    this.projectile.y = y + this.towerSize / 2;
     this.towerTexture = r.LoadTexture("assets/tower.png");
     this.projectileTexture = r.LoadTexture("assets/projectile.png");
   }
@@ -39,17 +40,9 @@ export class Tower {
       width: this.towerTexture.width,
       height: this.towerTexture.height,
     };
-    r.DrawTexturePro(
-      this.towerTexture,
-      src,
-      dest,
-      { x: 0, y: 0 },
-      0,
-      r.WHITE,
-    );
-
+    r.DrawTexturePro(this.towerTexture, src, dest, { x: 0, y: 0 }, 0, r.WHITE);
   }
-  
+
   drawProjectile() {
     const dest = {
       x: this.projectile.x - this.projectileSize / 2,
@@ -82,33 +75,53 @@ export class Tower {
     );
   }
 
-  checkIfEnemyWithinTowerRange(enemy: Enemy): void {
-    const dx = enemy.pos.x - this.position.x;
-    const dy = enemy.pos.y - this.position.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    console.log(distance);
-    this.shouldShot = distance <= 100;
+  checkIfEnemyWithinTowerRange(enemies: Enemy[]): void {
+    // If projectile is already fired, keep tracking current target
+    if (this.projectileFired() && this.currentTarget) return;
+    
+    // Find closest enemy within range
+    let closestEnemy: Enemy | null = null;
+    let closestDistance = 100; // Tower range
+    
+    for (const enemy of enemies) {
+      const dx = enemy.pos.x - (this.position.x + this.towerSize / 2);
+      const dy = enemy.pos.y - (this.position.y + this.towerSize / 2);
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      if (distance <= 100 && distance < closestDistance) {
+        closestEnemy = enemy;
+        closestDistance = distance;
+      }
+    }
+    
+    if (closestEnemy) {
+      this.currentTarget = closestEnemy;
+      this.shouldShot = true;
+    } else {
+      this.shouldShot = false;
+    }
   }
 
-  updateProjectile(enemy: Enemy) {
-    if (!this.shouldShot && !this.projectileFired()) return;
+  updateProjectile() {
+    if (!this.currentTarget || (!this.shouldShot && !this.projectileFired())) return;
 
-    // Check if projectile collides with enemy rectangle (10x10)
+    // Check if projectile collides with current target
     if (
-      this.projectile.x + 5 >= enemy.pos.x &&
-      this.projectile.x - 5 <= enemy.pos.x + 10 &&
-      this.projectile.y + 5 >= enemy.pos.y &&
-      this.projectile.y - 5 <= enemy.pos.y + 10
+      this.projectile.x + 10 >= this.currentTarget.pos.x &&
+      this.projectile.x - 10 <= this.currentTarget.pos.x + 10 &&
+      this.projectile.y + 10 >= this.currentTarget.pos.y &&
+      this.projectile.y - 10 <= this.currentTarget.pos.y + 10
     ) {
       // Hit the target, handle collision
-      enemy.takeDamage();
+      this.currentTarget.takeDamage();
       this.resetProjectile();
       this.shouldShot = false;
+      this.currentTarget = null;
       return;
     }
 
-    const dx = enemy.pos.x - this.projectile.x;
-    const dy = enemy.pos.y - this.projectile.y;
+    const dx = this.currentTarget.pos.x - this.projectile.x;
+    const dy = this.currentTarget.pos.y - this.projectile.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     const directionX = dx / distance;
@@ -123,13 +136,14 @@ export class Tower {
 
   projectileFired(): boolean {
     return (
-      this.projectile.x - (this.towerSize/2) != this.position.x &&
-      this.projectile.y - (this.towerSize/2) != this.position.y
+      this.projectile.x - this.towerSize / 2 != this.position.x &&
+      this.projectile.y - this.towerSize / 2 != this.position.y
     );
   }
 
   resetProjectile() {
-    this.projectile.x = this.position.x + (this.towerSize/2);
-    this.projectile.y = this.position.y + (this.towerSize/2);
+    this.projectile.x = this.position.x + this.towerSize / 2;
+    this.projectile.y = this.position.y + this.towerSize / 2;
+    this.currentTarget = null;
   }
 }
