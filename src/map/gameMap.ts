@@ -10,6 +10,7 @@ export default class GameMap {
   enemyPathIntialized: boolean = false;
   mouseClick: (pos: r.Vector2) => void;
   baseTexture: r.Texture;
+  towersLocations: {col: number, row: number}[] = [];
 
   constructor(mouseClick: (pos: r.Vector2) => void) {
     this.enemyPath = [];
@@ -40,8 +41,9 @@ export default class GameMap {
           boxHeight,
           color,
         );
-
-        if (color === r.GREEN && pauseState) {
+        // TODO: remove logic from draw
+        // TODO: add remove tower logic
+        if (color === r.GREEN && pauseState && !this.towersLocations.find((loc) => loc.col === col && loc.row === row)) {
           // Check if mouse is hovering over this rectangle
           if (this.isMouseInRec(col, row)) {
             // Draw a semi-transparent white overlay for highlight
@@ -55,6 +57,7 @@ export default class GameMap {
 
             if (r.IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
               this.mouseClick({ x: col * boxWidth, y: row * boxHeight });
+              this.towersLocations.push({col: col, row: row});
             }
           }
         }
