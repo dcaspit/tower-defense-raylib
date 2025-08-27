@@ -40,9 +40,11 @@ The main game loop is in `src/index.ts` which:
 
 **Tower (`src/towers/tower.ts`)**
 - Single tower implementation with projectile system
-- Calculates projectile trajectory toward enemy position
+- Calculates projectile trajectory toward enemy center position for accuracy
 - Draws tower sprite, range circle, and projectile
-- Implements basic collision detection for projectile hits
+- Implements AABB collision detection for precise projectile-enemy collision
+- Handles edge cases like division by zero and very close targets
+- Uses proper bounding box collision with projectileSize (20px) and enemySize (40px)
 
 **Enemy (`src/enemies/enemy.ts`)**
 - Basic enemy class with position tracking
@@ -54,3 +56,14 @@ The main game loop is in `src/index.ts` which:
 - Vector2 positions for all game objects using Raylib's coordinate system
 - Linear interpolation for smooth enemy movement between grid waypoints
 - Component-based architecture with separate managers for different game systems
+
+## Recent Improvements
+
+### Collision Detection Enhancement (src/towers/tower.ts:109-148)
+**Problem**: The original collision detection used hardcoded values and didn't account for proper bounding box collision between projectiles and enemies.
+
+**Solution**: Implemented proper AABB (Axis-Aligned Bounding Box) collision detection:
+- Uses actual `projectileSize` (20px) and `enemySize` (40px) for accurate collision boundaries
+- Aims projectiles at enemy center rather than top-left corner for better accuracy
+- Added edge case handling for very close targets (distance < 0.1) to prevent division by zero
+- Maintains collision detection in `updateProjectile()` method at `tower.ts:110-114`

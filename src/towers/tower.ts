@@ -84,8 +84,8 @@ export class Tower {
     let closestDistance = 100; // Tower range
     
     for (const enemy of enemies) {
-      const dx = enemy.pos.x - (this.position.x + this.towerSize / 2);
-      const dy = enemy.pos.y - (this.position.y + this.towerSize / 2);
+      const dx = (enemy.pos.x + enemy.enemySize / 2) - (this.position.x + this.towerSize / 2);
+      const dy = (enemy.pos.y + enemy.enemySize / 2) - (this.position.y + this.towerSize / 2);
       const distance = Math.sqrt(dx * dx + dy * dy);
       
       if (distance <= 100 && distance < closestDistance) {
@@ -106,11 +106,12 @@ export class Tower {
     if (!this.currentTarget || (!this.shouldShot && !this.projectileFired())) return;
 
     // Check if projectile collides with current target
+    // Use proper AABB collision detection with projectile and enemy sizes
     if (
-      this.projectile.x + 10 >= this.currentTarget.pos.x &&
-      this.projectile.x - 10 <= this.currentTarget.pos.x + 10 &&
-      this.projectile.y + 10 >= this.currentTarget.pos.y &&
-      this.projectile.y - 10 <= this.currentTarget.pos.y + 10
+      this.projectile.x - this.projectileSize / 2 < this.currentTarget.pos.x + this.currentTarget.enemySize &&
+      this.projectile.x + this.projectileSize / 2 > this.currentTarget.pos.x &&
+      this.projectile.y - this.projectileSize / 2 < this.currentTarget.pos.y + this.currentTarget.enemySize &&
+      this.projectile.y + this.projectileSize / 2 > this.currentTarget.pos.y
     ) {
       // Hit the target, handle collision
       this.currentTarget.takeDamage();
@@ -120,9 +121,22 @@ export class Tower {
       return;
     }
 
-    const dx = this.currentTarget.pos.x - this.projectile.x;
-    const dy = this.currentTarget.pos.y - this.projectile.y;
+    // Aim at the center of the enemy for better accuracy
+    const targetCenterX = this.currentTarget.pos.x + this.currentTarget.enemySize / 2;
+    const targetCenterY = this.currentTarget.pos.y + this.currentTarget.enemySize / 2;
+    const dx = targetCenterX - this.projectile.x;
+    const dy = targetCenterY - this.projectile.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
+
+    // Avoid division by zero and handle very close targets
+    if (distance < 0.1) {
+      // Target reached, trigger collision
+      this.currentTarget.takeDamage();
+      this.resetProjectile();
+      this.shouldShot = false;
+      this.currentTarget = null;
+      return;
+    }
 
     const directionX = dx / distance;
     const directionY = dy / distance;
