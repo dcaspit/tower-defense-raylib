@@ -1,16 +1,19 @@
 import r from "raylib";
 import Enemy from "../enemies/enemy";
 import { warn } from "console";
+import Base from "../bases/base";
 
 export default class WaveManager {
   enemyPath: r.Vector2[];
   enemies: Enemy[];
+  base: Base;
   frameCounter: number = 0;
   framesPerMove: number = 60;
   framesPasses: number = 0;
 
-  constructor(enemyPath: r.Vector2[]) {
+  constructor(enemyPath: r.Vector2[], base: Base) {
     this.enemyPath = enemyPath;
+    this.base = base;
     this.enemies = [];
     this.enemies.push(new Enemy());
   }
@@ -31,6 +34,9 @@ export default class WaveManager {
         if(enemy.currentPathIndex < this.enemyPath.length - 2){
           enemy.currentPathIndex++;
         }    
+        if(enemy.currentPathIndex === this.enemyPath.length - 2) {
+          this.base.takeDamage();
+        }
       });
       this.frameCounter = 0;
       this.framesPasses++;
@@ -53,6 +59,7 @@ export default class WaveManager {
       if (enemy.currentPathIndex < this.enemyPath.length - 1) {
         const currentPos = this.getInterpolatedPosition(enemy.currentPathIndex);
         enemy.draw(currentPos);
+
       }
     });
 

@@ -9,14 +9,13 @@ export const boxHeight = 50;
 export default class GameMap {
   enemyPath: r.Vector2[];
   enemyPathIntialized: boolean = false;
-  mouseClick: (pos: r.Vector2) => void;
   towersLocations: {col: number, row: number}[] = [];
   base: Base;
 
-  constructor(mouseClick: (pos: r.Vector2) => void) {
+  constructor(private mouseClick: (pos: r.Vector2) => void, 
+             private onBaseDeath: () => void ) {
     this.enemyPath = [];
-    this.mouseClick = mouseClick;
-    this.base = new Base();
+    this.base = new Base(this.onBaseDeath);
     this.parseEnemyPath();
   }
 

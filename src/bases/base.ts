@@ -7,7 +7,7 @@ export default class Base {
   healthBar: HealthBar;
   health = 100;
   
-  constructor() {
+  constructor(private onBaseDeath: () => void) {
     this.baseTexture = r.LoadTexture("assets/base.png");
     this.healthBar = new HealthBar(this.health);
   }
@@ -34,5 +34,13 @@ export default class Base {
         r.WHITE,
       );
       this.healthBar.draw(position, this.health);
+  }
+
+  takeDamage() {
+    this.health -= 5;
+    if(this.health === 0) {
+      this.onBaseDeath();
+      this.health = 100;
+    }
   }
 }
