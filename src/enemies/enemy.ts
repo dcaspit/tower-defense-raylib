@@ -1,48 +1,31 @@
 import r from "raylib";
+import HealthBar from './healthBar';
 
 export default class Enemy {
   pos: r.Vector2 = { x: 0, y: 0 };
-  healthBar: r.Vector2 = { x: 0, y: 0};
+  healthBar: HealthBar;
   enemySize = 40;
   enemyTexture: r.Texture;
   health = 20;
   currentPathIndex: number = 0;
 
   constructor() {
+    this.healthBar = new HealthBar(this.health);
     this.enemyTexture = r.LoadTexture('assets/enemy.png');
   }
 
-  takeDamage() {
-    this.health--;
+  takeDamage(power: number) {
+    this.health -= power;
   }
 
   draw(position: r.Vector2) {
     this.pos.x = position.x + 5;
     this.pos.y = position.y + 5;
-    this.healthBar.x = position.x - 5;
-    this.healthBar.y = position.y - 10;
-
+    this.healthBar.draw(position, this.health);
     this.drawEnemyTexture();
-    this.drawHealhBar();
   }
 
-  drawHealhBar() {
-    const healthPercent = this.health / 20; // 20 == maxHealth
-    const bgRec: r.Rectangle = {
-      x: this.healthBar.x,
-      y: this.healthBar.y,
-      width: 55 * healthPercent,
-      height: 8
-    };
-    r.DrawRectangleRounded(bgRec, 0.5, 8, r.RED);
-    const linesRec: r.Rectangle = {
-      x: this.healthBar.x,
-      y: this.healthBar.y,
-      width: 55,
-      height: 7
-    };
-    r.DrawRectangleRoundedLines(linesRec, 0.5, 8, 1, r.BLACK);
-  }
+  
 
   drawEnemyTexture() {
     const dest = {

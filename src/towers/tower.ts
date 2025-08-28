@@ -114,7 +114,7 @@ export class Tower {
       this.projectile.y + this.projectileSize / 2 > this.currentTarget.pos.y
     ) {
       // Hit the target, handle collision
-      this.currentTarget.takeDamage();
+      this.currentTarget.takeDamage(this.power);
       this.resetProjectile();
       this.shouldShot = false;
       this.currentTarget = null;
@@ -131,7 +131,7 @@ export class Tower {
     // Avoid division by zero and handle very close targets
     if (distance < 0.1) {
       // Target reached, trigger collision
-      this.currentTarget.takeDamage();
+      this.currentTarget.takeDamage(this.power);
       this.resetProjectile();
       this.shouldShot = false;
       this.currentTarget = null;

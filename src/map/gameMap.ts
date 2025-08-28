@@ -1,21 +1,22 @@
 import r, { MOUSE_BUTTON_LEFT } from "raylib";
 import { screenHeight, screenWidth } from "../utils/consts";
 import { main_map } from "./maps";
+import Base from '../bases/base';
 
-const boxWidth = 50;
-const boxHeight = 50;
+export const boxWidth = 50;
+export const boxHeight = 50;
 
 export default class GameMap {
   enemyPath: r.Vector2[];
   enemyPathIntialized: boolean = false;
   mouseClick: (pos: r.Vector2) => void;
-  baseTexture: r.Texture;
   towersLocations: {col: number, row: number}[] = [];
+  base: Base;
 
   constructor(mouseClick: (pos: r.Vector2) => void) {
     this.enemyPath = [];
     this.mouseClick = mouseClick;
-    this.baseTexture = r.LoadTexture("assets/base.png");
+    this.base = new Base();
     this.parseEnemyPath();
   }
 
@@ -76,26 +77,7 @@ export default class GameMap {
     // Draw base sprite at the end of the enemy path
     if (this.enemyPath.length > 0) {
       const endPosition = this.enemyPath[this.enemyPath.length - 1];
-      const destRect = {
-        x: endPosition.x,
-        y: endPosition.y,
-        width: boxWidth,
-        height: boxHeight,
-      };
-      const sourceRect = {
-        x: 0,
-        y: 0,
-        width: this.baseTexture.width,
-        height: this.baseTexture.height,
-      };
-      r.DrawTexturePro(
-        this.baseTexture,
-        sourceRect,
-        destRect,
-        { x: 0, y: 0 },
-        0,
-        r.WHITE,
-      );
+      this.base.draw(endPosition);
     }
   }
 
