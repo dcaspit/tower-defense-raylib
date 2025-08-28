@@ -1,12 +1,15 @@
 import r from 'raylib';
 import { boxWidth, boxHeight } from '../map/gameMap';
+import HealthBar from '../enemies/healthBar';
 
 export default class Base {
-
   baseTexture: r.Texture;
+  healthBar: HealthBar;
+  health = 100;
   
   constructor() {
     this.baseTexture = r.LoadTexture("assets/base.png");
+    this.healthBar = new HealthBar(this.health);
   }
 
   draw(position: r.Vector2) {
@@ -30,5 +33,6 @@ export default class Base {
         0,
         r.WHITE,
       );
+      this.healthBar.draw(position, this.health);
   }
 }

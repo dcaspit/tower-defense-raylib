@@ -28,7 +28,7 @@ export default class WaveManager {
     // Check if enough frames have passed to move
     if (this.frameCounter >= this.framesPerMove) {
       this.enemies.forEach((enemy) => {
-        if(enemy.currentPathIndex < this.enemyPath.length - 1){
+        if(enemy.currentPathIndex < this.enemyPath.length - 2){
           enemy.currentPathIndex++;
         }    
       });
@@ -50,7 +50,7 @@ export default class WaveManager {
     // Only draw if we have a valid position
     this.enemies.forEach((enemy) => {
       
-      if (enemy.currentPathIndex < this.enemyPath.length) {
+      if (enemy.currentPathIndex < this.enemyPath.length - 1) {
         const currentPos = this.getInterpolatedPosition(enemy.currentPathIndex);
         enemy.draw(currentPos);
       }
@@ -68,7 +68,7 @@ export default class WaveManager {
   //When frameCounter = 60, t = 1 → enemy reaches next waypoint
   private getInterpolatedPosition(currentPathIndex: number): r.Vector2 {
     // If we're at the last waypoint, just return it
-    if (currentPathIndex >= this.enemyPath.length - 1) {
+    if (currentPathIndex >= this.enemyPath.length - 2) {
       return this.enemyPath[currentPathIndex];
     }
 

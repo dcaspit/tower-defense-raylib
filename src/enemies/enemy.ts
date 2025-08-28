@@ -25,8 +25,6 @@ export default class Enemy {
     this.drawEnemyTexture();
   }
 
-  
-
   drawEnemyTexture() {
     const dest = {
       x: this.pos.x,
