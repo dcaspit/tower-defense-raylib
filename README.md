@@ -2,7 +2,7 @@
 - [x] See Grid of map
 - [x] Place towers across the map
 - [ ] Upgrade towers
-- [ ] Base that enemies hit and lower health
+- [x] Base that enemies hit and lower health
 
 ### Game Control (right view panel)
 - [x] Start level
@@ -29,8 +29,8 @@
 - [ ] Quit
 
 ## Bugs
-- [ ] We can put more then 1 tower in the same spot
-- [ ] Enemies not being fired immediatly when entering a circle around a tower
+- [x] We can put more then 1 tower in the same spot
+- [x] Enemies not being fired immediatly when entering a circle around a tower
 - [ ] Not sure - It seems that many towers not damage enemy as expected
 
 ## Nice to have
