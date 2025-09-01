@@ -19,10 +19,10 @@ export default class WaveManager {
   }
   
   reset() {
-    this.enemies.forEach((enemy) => {
-      enemy.currentPathIndex = 0;
-    })
+    this.enemies = [];
+    this.enemies.push(new Enemy());
     this.frameCounter = 0;
+    this.framesPasses = 0;
   }
 
   update() {
@@ -52,17 +52,13 @@ export default class WaveManager {
   }
   
   drawWave(): Enemy[] {
-    if(this.enemies.length === 0) return this.enemies;
     // Only draw if we have a valid position
     this.enemies.forEach((enemy) => {
-      
       if (enemy.currentPathIndex < this.enemyPath.length - 1) {
         const currentPos = this.getInterpolatedPosition(enemy.currentPathIndex);
         enemy.draw(currentPos);
-
       }
     });
-
 
     return this.enemies;
   }

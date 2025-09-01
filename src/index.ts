@@ -16,13 +16,16 @@ function main() {
   const addTower = (pos: r.Vector2) => {
     towers.push(new Tower(pos.x, pos.y));
   };
+
   const onBaseDeath = () => {
     waveMgr.reset()
     towers.forEach((tower) => tower.resetProjectile())
     pause = true;
-  }
+  };
+
   const map = new GameMap(addTower,onBaseDeath);
   const waveMgr = new WaveManager(map.enemyPath,map.base);
+
   const onStart = () => {
     pause = !pause;
     if (pause) {
