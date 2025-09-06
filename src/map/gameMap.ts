@@ -5,6 +5,7 @@ import Base from '../bases/base';
 
 export const boxWidth = 50;
 export const boxHeight = 50;
+export const topMargin = 50;
 
 export default class GameMap {
   enemyPath: r.Vector2[];
@@ -36,7 +37,7 @@ export default class GameMap {
 
         r.DrawRectangle(
           col * boxWidth,
-          row * boxHeight,
+          topMargin + row * boxHeight,
           boxWidth,
           boxHeight,
           color,
@@ -49,7 +50,7 @@ export default class GameMap {
             // Draw a semi-transparent white overlay for highlight
             r.DrawRectangle(
               col * boxWidth,
-              row * boxHeight,
+              topMargin + row * boxHeight,
               boxWidth,
               boxHeight,
               { r: 255, g: 255, b: 255, a: 64 }, // Semi-transparent white
@@ -64,7 +65,7 @@ export default class GameMap {
         if (pauseState) {
           r.DrawRectangleLines(
             col * boxWidth,
-            row * boxHeight,
+            topMargin + row * boxHeight,
             boxWidth,
             boxHeight,
             r.BLACK,
@@ -123,7 +124,7 @@ export default class GameMap {
     // Add starting position
     let startPos: r.Vector2 = {
       x: currentCol * boxWidth,
-      y: currentRow * boxHeight,
+      y: topMargin + currentRow * boxHeight,
     };
     this.enemyPath.push(startPos);
     visited[currentRow][currentCol] = true;
@@ -161,7 +162,7 @@ export default class GameMap {
             // Add position to path
             let pos: r.Vector2 = {
               x: currentCol * boxWidth,
-              y: currentRow * boxHeight,
+              y: topMargin + currentRow * boxHeight,
             };
             this.enemyPath.push(pos);
 
