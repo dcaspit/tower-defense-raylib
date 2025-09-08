@@ -34,7 +34,9 @@ export default class WaveManager {
         if(enemy.currentPathIndex < this.enemyPath.length - 1){
           enemy.currentPathIndex++;
         }    
+        // TODO: Change to base's position
         if(enemy.currentPathIndex === this.enemyPath.length - 1) {
+          enemy.health = 0;
           this.base.takeDamage();
         }
       });
