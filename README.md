@@ -6,21 +6,6 @@
 - [ ] Enemy hit base animation
 - [ ] Projectile hit enemy animation
 
-## Sprites 
-- [ ] Walking Enemy 
-    - [ ] Left
-    - [ ] right
-    - [ ] Top
-    - [ ] Bottom
-- [ ] Towers
-    - [ ] First level tower
-    - [ ] Second level tower
-    - [ ] Third level tower
-    - [ ] Fourth level tower
-    - [ ] Fifth level tower
-- [ ] Base
-    - Five leves bases (like tower)
-
 ### Game Control (right view panel)
 - [x] Start level
 - [x] Pause level
@@ -49,6 +34,21 @@
 - [x] We can put more then 1 tower in the same spot
 - [x] Enemies not being fired immediatly when entering a circle around a tower
 - [ ] Not sure - It seems that many towers not damage enemy as expected
+
+## Sprites 
+- [ ] Walking Enemy 
+    - [ ] Left
+    - [ ] right
+    - [ ] Top
+    - [ ] Bottom
+- [ ] Towers
+    - [ ] First level tower
+    - [ ] Second level tower
+    - [ ] Third level tower
+    - [ ] Fourth level tower
+    - [ ] Fifth level tower
+- [ ] Base
+    - Five leves bases (like tower)
 
 ## Investigation
 - [ ] Investigate another games and see what they are doing when enemies stack at the end of the path. are they overlap each other or lined up?  

@@ -1,6 +1,6 @@
 import r from "raylib";
 
-export class Panel {
+export class RightPanel {
   position: r.Vector2 = { x: 500, y: 0 };
   gameBtn: r.Vector2 = { x: 530, y: 80 };
 

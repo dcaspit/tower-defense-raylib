@@ -3,7 +3,8 @@ import GameMap from "./map/gameMap";
 import { screenHeight, screenWidth } from "./utils/consts";
 import WaveManager from "./wave/waveManager";
 import { Tower } from "./towers/tower";
-import { Panel } from "./panel/panel";
+import { RightPanel } from "./panels/rightPanel";
+import { TopPanel } from "./panels/topPanel";
 
 function main() {
   let frameCounter: number = 0;
@@ -33,7 +34,8 @@ function main() {
       towers.forEach((tower) => tower.resetProjectile());
     }
   };
-  const panel = new Panel(onStart);
+  const rightPanel = new RightPanel(onStart);
+  const topPanel = new TopPanel();
 
   while (!r.WindowShouldClose()) {
     r.BeginDrawing();
@@ -59,7 +61,8 @@ function main() {
       });
     }
 
-    panel.draw(pause);
+    rightPanel.draw(pause);
+    topPanel.draw();
     r.EndDrawing();
   }
 
