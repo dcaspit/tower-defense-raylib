@@ -5,6 +5,7 @@ export class TopPanel {
   position: r.Vector2 = { x: 0, y: 0 };
   goldPosition: r.Vector2 = { x: 20, y: 20 };
   goldTexture: r.Texture2D;
+  private money: number = 200;
 
   constructor(){
     this.goldTexture = r.LoadTexture('assets/gold.png');
@@ -20,7 +21,7 @@ export class TopPanel {
     )
 
     r.DrawText(
-      "200",
+      `${this.money}`,
       this.goldPosition.x,
       this.goldPosition.y,
       15,
@@ -47,6 +48,10 @@ export class TopPanel {
       0,
       r.WHITE,
     );
+  }
+  
+  addMoney() {
+    this.money += 50;
   }
 
 }

@@ -36,6 +36,9 @@ function main() {
   };
   const rightPanel = new RightPanel(onStart);
   const topPanel = new TopPanel();
+  const onEnemyDeath = () => {
+    topPanel.addMoney();
+  };
 
   while (!r.WindowShouldClose()) {
     r.BeginDrawing();
@@ -44,7 +47,7 @@ function main() {
     map.drawMap(pause);
 
     if (!pause) {
-      waveMgr.update();
+      waveMgr.update(onEnemyDeath);
       let enemies = waveMgr.drawWave();
       towers.forEach((tower) => {
         if (enemies.length !== 0) {

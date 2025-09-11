@@ -57,7 +57,7 @@ export default class GameMap {
             );
 
             if (r.IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-              this.mouseClick({ x: col * boxWidth, y: row * boxHeight });
+              this.mouseClick({ x: col * boxWidth, y: topMargin + row * boxHeight });
               this.towersLocations.push({col: col, row: row});
             }
           }
@@ -86,7 +86,7 @@ export default class GameMap {
     let mouseY = r.GetMouseY();
     let startBoxX = col * boxWidth;
     let endBoxX = startBoxX + boxWidth;
-    let startBoxY = row * boxHeight;
+    let startBoxY = topMargin + row * boxHeight;
     let endBoxY = startBoxY + boxHeight;
     return (
       mouseX >= startBoxX &&

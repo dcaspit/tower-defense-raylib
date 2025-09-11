@@ -7,7 +7,7 @@ export class RightPanel {
   constructor(private onClick: () => void) {}
 
   draw(paused: boolean) {
-    r.DrawRectangle(this.position.x, this.position.y, 150, 500, r.DARKBROWN);
+    r.DrawRectangle(this.position.x, this.position.y, 150, 550, r.DARKBROWN);
     this.drawGameBtn(paused);
     this.handleGameBtnClick();
   }

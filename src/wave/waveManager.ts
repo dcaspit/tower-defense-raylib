@@ -9,7 +9,7 @@ export default class WaveManager {
   base: Base;
   frameCounter: number = 0;
   framesPerMove: number = 60;
-  framesPasses: number = 0;
+  seconds: number = 0;
 
   constructor(enemyPath: r.Vector2[], base: Base) {
     this.enemyPath = enemyPath;
@@ -22,10 +22,10 @@ export default class WaveManager {
     this.enemies = [];
     this.enemies.push(new Enemy());
     this.frameCounter = 0;
-    this.framesPasses = 0;
+    this.seconds = 0;
   }
 
-  update() {
+  update(onEnemyDeath: () => void) {
     this.frameCounter++;
 
     // Check if enough frames have passed to move
@@ -41,15 +41,35 @@ export default class WaveManager {
         }
       });
       this.frameCounter = 0;
-      this.framesPasses++;
-      if(this.framesPasses % 10 === 0) {
+      this.seconds++;
+      if(this.seconds % 10 === 0) {
         this.enemies.push(new Enemy());
       }
-      this.removeDeadEnemies();    
+      if(this.seconds % 11 === 0) {
+        this.enemies.push(new Enemy());
+      }
+      if(this.seconds % 12 === 0) {
+        this.enemies.push(new Enemy());
+      }
+      if(this.seconds % 13 === 0) {
+        this.enemies.push(new Enemy());
+      }
+      if(this.seconds % 14 === 0) {
+        this.enemies.push(new Enemy());
+      }
+      if(this.seconds % 15 === 0) {
+        this.seconds = 0;
+      }
+      this.removeDeadEnemies(onEnemyDeath);    
     }
   }
 
-  removeDeadEnemies() {
+  removeDeadEnemies(onEnemyDeath: () => void) {
+    this.enemies.forEach((enemy, index) => {
+      if(enemy.health <= 0) {
+        onEnemyDeath();
+      }
+    })
     this.enemies = this.enemies.filter(enemy => enemy.health > 0);
   }
   
