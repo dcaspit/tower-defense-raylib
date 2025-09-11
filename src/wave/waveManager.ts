@@ -2,10 +2,11 @@ import r from "raylib";
 import Enemy from "../enemies/enemy";
 import { warn } from "console";
 import Base from "../bases/base";
+import { FirstWave, Wave } from "./wave";
 
 export default class WaveManager {
   enemyPath: r.Vector2[];
-  enemies: Enemy[];
+  wave: Wave;
   base: Base;
   frameCounter: number = 0;
   framesPerMove: number = 60;
@@ -14,13 +15,11 @@ export default class WaveManager {
   constructor(enemyPath: r.Vector2[], base: Base) {
     this.enemyPath = enemyPath;
     this.base = base;
-    this.enemies = [];
-    this.enemies.push(new Enemy());
+    this.wave = new FirstWave();
   }
   
   reset() {
-    this.enemies = [];
-    this.enemies.push(new Enemy());
+    this.wave = new FirstWave();
     this.frameCounter = 0;
     this.seconds = 0;
   }
@@ -30,59 +29,43 @@ export default class WaveManager {
 
     // Check if enough frames have passed to move
     if (this.frameCounter >= this.framesPerMove) {
-      this.enemies.forEach((enemy) => {
+      this.wave.enemies.forEach((enemy) => {
         if(enemy.currentPathIndex < this.enemyPath.length - 1){
           enemy.currentPathIndex++;
         }    
         // TODO: Change to base's position
         if(enemy.currentPathIndex === this.enemyPath.length - 1) {
-          enemy.health = 0;
+          enemy.reachedBase = true;
           this.base.takeDamage();
         }
       });
       this.frameCounter = 0;
       this.seconds++;
-      if(this.seconds % 10 === 0) {
-        this.enemies.push(new Enemy());
-      }
-      if(this.seconds % 11 === 0) {
-        this.enemies.push(new Enemy());
-      }
-      if(this.seconds % 12 === 0) {
-        this.enemies.push(new Enemy());
-      }
-      if(this.seconds % 13 === 0) {
-        this.enemies.push(new Enemy());
-      }
-      if(this.seconds % 14 === 0) {
-        this.enemies.push(new Enemy());
-      }
-      if(this.seconds % 15 === 0) {
-        this.seconds = 0;
-      }
+      this.wave.generateWave(this.seconds);
+      if(this.seconds % 15 === 0) this.seconds = 0;
       this.removeDeadEnemies(onEnemyDeath);    
     }
   }
 
   removeDeadEnemies(onEnemyDeath: () => void) {
-    this.enemies.forEach((enemy, index) => {
+    this.wave.enemies.forEach((enemy, index) => {
       if(enemy.health <= 0) {
         onEnemyDeath();
       }
     })
-    this.enemies = this.enemies.filter(enemy => enemy.health > 0);
+    this.wave.enemies = this.wave.enemies.filter(enemy => enemy.health > 0 && !enemy.reachedBase);
   }
   
   drawWave(): Enemy[] {
     // Only draw if we have a valid position
-    this.enemies.forEach((enemy) => {
+    this.wave.enemies.forEach((enemy) => {
       if (enemy.currentPathIndex < this.enemyPath.length - 1) {
         const currentPos = this.getInterpolatedPosition(enemy.currentPathIndex);
         enemy.draw(currentPos);
       }
     });
 
-    return this.enemies;
+    return this.wave.enemies;
   }
 
   //Linear interpolation: Uses the formula start + (end - start) * t where t goes from 0 to 1

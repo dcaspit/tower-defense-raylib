@@ -8,6 +8,7 @@ export default class Enemy {
   enemyTexture: r.Texture;
   health = 20;
   currentPathIndex: number = 0;
+  reachedBase = false;
 
   constructor() {
     this.healthBar = new HealthBar(this.health);
@@ -16,6 +17,10 @@ export default class Enemy {
 
   takeDamage(power: number) {
     this.health -= power;
+  }
+  
+  kill() {
+    this.health = 0;
   }
 
   draw(position: r.Vector2) {
