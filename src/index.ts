@@ -24,8 +24,8 @@ function main() {
     pause = true;
   };
 
-  const map = new GameMap(addTower,onBaseDeath);
-  const waveMgr = new WaveManager(map.enemyPath,map.base);
+  const map = new GameMap(addTower, onBaseDeath);
+  const waveMgr = new WaveManager(map.enemyPath, map.base);
 
   const onStart = () => {
     pause = !pause;
@@ -34,6 +34,7 @@ function main() {
       towers.forEach((tower) => tower.resetProjectile());
     }
   };
+
   const rightPanel = new RightPanel(onStart);
   const topPanel = new TopPanel();
   const onEnemyDeath = () => {
@@ -65,7 +66,7 @@ function main() {
     }
 
     rightPanel.draw(pause);
-    topPanel.draw();
+    topPanel.draw(waveMgr.waveNumber());
     r.EndDrawing();
   }
 

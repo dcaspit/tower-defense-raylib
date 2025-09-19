@@ -17,11 +17,19 @@ export default class WaveManager {
     this.base = base;
     this.wave = new FirstWave();
   }
-  
+
   reset() {
     this.wave = new FirstWave();
     this.frameCounter = 0;
     this.seconds = 0;
+  }
+
+  waveNumber(): number {
+    if (this.wave instanceof FirstWave) {
+      return 1;
+    }
+
+    throw new Error('Invalid wave');
   }
 
   update(onEnemyDeath: () => void) {
@@ -30,11 +38,11 @@ export default class WaveManager {
     // Check if enough frames have passed to move
     if (this.frameCounter >= this.framesPerMove) {
       this.wave.enemies.forEach((enemy) => {
-        if(enemy.currentPathIndex < this.enemyPath.length - 1){
+        if (enemy.currentPathIndex < this.enemyPath.length - 1) {
           enemy.currentPathIndex++;
-        }    
+        }
         // TODO: Change to base's position
-        if(enemy.currentPathIndex === this.enemyPath.length - 1) {
+        if (enemy.currentPathIndex === this.enemyPath.length - 1) {
           enemy.reachedBase = true;
           this.base.takeDamage();
         }
@@ -42,20 +50,20 @@ export default class WaveManager {
       this.frameCounter = 0;
       this.seconds++;
       this.wave.generateWave(this.seconds);
-      if(this.seconds % 15 === 0) this.seconds = 0;
-      this.removeDeadEnemies(onEnemyDeath);    
+      if (this.seconds % 15 === 0) this.seconds = 0;
+      this.removeDeadEnemies(onEnemyDeath);
     }
   }
 
   removeDeadEnemies(onEnemyDeath: () => void) {
     this.wave.enemies.forEach((enemy, index) => {
-      if(enemy.health <= 0) {
+      if (enemy.health <= 0) {
         onEnemyDeath();
       }
     })
     this.wave.enemies = this.wave.enemies.filter(enemy => enemy.health > 0 && !enemy.reachedBase);
   }
-  
+
   drawWave(): Enemy[] {
     // Only draw if we have a valid position
     this.wave.enemies.forEach((enemy) => {

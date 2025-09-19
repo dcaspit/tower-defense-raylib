@@ -14,7 +14,7 @@
 ### Game Systems
 - [ ] Money
   - [x] Killing Enemies
-    - [ ] Disable the money earning from death by Base collision
+    - [x] Disable the money earning from death by Base collision
   - [ ] Complete a wave
 - [ ] Shop
   - [ ] Buy towers
