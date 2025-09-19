@@ -3,14 +3,12 @@ import Enemy from "../enemies/enemy";
 import { warn } from "console";
 import Base from "../bases/base";
 import { FirstWave, Wave } from "./wave";
+import { GameClock } from "../utils/game-clock";
 
 export default class WaveManager {
   enemyPath: r.Vector2[];
   wave: Wave;
   base: Base;
-  frameCounter: number = 0;
-  framesPerMove: number = 60;
-  seconds: number = 0;
 
   constructor(enemyPath: r.Vector2[], base: Base) {
     this.enemyPath = enemyPath;
@@ -20,8 +18,6 @@ export default class WaveManager {
 
   reset() {
     this.wave = new FirstWave();
-    this.frameCounter = 0;
-    this.seconds = 0;
   }
 
   waveNumber(): number {
@@ -33,26 +29,20 @@ export default class WaveManager {
   }
 
   update(onEnemyDeath: () => void) {
-    this.frameCounter++;
+    this.wave.enemies.forEach((enemy) => {
+      if (enemy.currentPathIndex < this.enemyPath.length - 1) {
+        enemy.currentPathIndex++;
+        return;
+      }
+      // TODO: Change to base's position
+      if (enemy.currentPathIndex == this.enemyPath.length - 1) {
+        enemy.reachedBase = true;
+        this.base.takeDamage();
+      }
+    });
 
-    // Check if enough frames have passed to move
-    if (this.frameCounter >= this.framesPerMove) {
-      this.wave.enemies.forEach((enemy) => {
-        if (enemy.currentPathIndex < this.enemyPath.length - 1) {
-          enemy.currentPathIndex++;
-        }
-        // TODO: Change to base's position
-        if (enemy.currentPathIndex === this.enemyPath.length - 1) {
-          enemy.reachedBase = true;
-          this.base.takeDamage();
-        }
-      });
-      this.frameCounter = 0;
-      this.seconds++;
-      this.wave.generateWave(this.seconds);
-      if (this.seconds % 15 === 0) this.seconds = 0;
-      this.removeDeadEnemies(onEnemyDeath);
-    }
+    this.wave.generateWave();
+    this.removeDeadEnemies(onEnemyDeath);
   }
 
   removeDeadEnemies(onEnemyDeath: () => void) {
@@ -92,7 +82,7 @@ export default class WaveManager {
     const nextWaypoint = this.enemyPath[currentPathIndex + 1];
 
     // Calculate interpolation factor (0 to 1)
-    const t = this.frameCounter / this.framesPerMove;
+    const t = GameClock.translitionFactor();
 
     // Interpolate between current and next waypoint
     const interpolatedPos: r.Vector2 = {

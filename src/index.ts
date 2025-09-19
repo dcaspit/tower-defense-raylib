@@ -5,10 +5,9 @@ import WaveManager from "./wave/waveManager";
 import { Tower } from "./towers/tower";
 import { RightPanel } from "./panels/rightPanel";
 import { TopPanel } from "./panels/topPanel";
+import { GameClock } from "./utils/game-clock";
 
 function main() {
-  let frameCounter: number = 0;
-
   r.InitWindow(screenWidth, screenHeight, "Tower Defense");
   r.SetTargetFPS(60);
 
@@ -48,6 +47,7 @@ function main() {
     map.drawMap(pause);
 
     if (!pause) {
+      GameClock.update();
       waveMgr.update(onEnemyDeath);
       let enemies = waveMgr.drawWave();
       towers.forEach((tower) => {
