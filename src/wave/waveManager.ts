@@ -34,23 +34,25 @@ export default class WaveManager {
     this.wave.enemies.forEach((enemy) => {
       if (enemy.currentPathIndex < this.enemyPath.length - 1) {
         enemy.currentPathIndex++;
-        return;
       }
       // TODO: Change to base's position
       if (enemy.currentPathIndex == this.enemyPath.length - 1) {
         enemy.reachedBase = true;
+        this.removeDeadEnemies(onEnemyDeath);
         this.base.takeDamage();
       }
     });
 
-    this.wave.generateWave();
-    this.removeDeadEnemies(onEnemyDeath);
+    this.wave.updateWave();
   }
 
   removeDeadEnemies(onEnemyDeath: () => void) {
     this.wave.enemies.forEach((enemy, index) => {
       if (enemy.health <= 0) {
         onEnemyDeath();
+      }
+      if (enemy.reachedBase) {
+        console.log('Enemy Reached Base:', enemy.index);
       }
     })
     this.wave.enemies = this.wave.enemies.filter(enemy => enemy.health > 0 && !enemy.reachedBase);

@@ -47,7 +47,6 @@ function main() {
     map.drawMap(pause);
 
     if (!pause) {
-
       GameClock.startTick();
       waveMgr.update(onEnemyDeath);
       GameClock.endTick();
@@ -69,7 +68,6 @@ function main() {
 
     rightPanel.draw(pause);
     topPanel.draw(waveMgr.waveNumber());
-
     r.EndDrawing();
   }
 
