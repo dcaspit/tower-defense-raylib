@@ -5,12 +5,19 @@ export class GameClock {
   private static seconds: number = 0;
   private static framesPerMove: number = 60;
 
-  static update() {
+  static startTick() {
     this.frameCount++;
-    // Check if enough frames have passed to move
-    if (this.frameCount < this.framesPerMove) return;
-    this.frameCount = 0;
-    this.seconds++;
+  }
+
+  static endTick() {
+    if (this.sixtyFramesPassed()) {
+      this.frameCount = 0;
+      this.seconds++;
+    }
+  }
+
+  static sixtyFramesPassed(): boolean {
+    return this.frameCount >= this.framesPerMove;
   }
 
   static reset() {

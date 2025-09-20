@@ -29,6 +29,8 @@ export default class WaveManager {
   }
 
   update(onEnemyDeath: () => void) {
+    if (!GameClock.sixtyFramesPassed()) return;
+
     this.wave.enemies.forEach((enemy) => {
       if (enemy.currentPathIndex < this.enemyPath.length - 1) {
         enemy.currentPathIndex++;

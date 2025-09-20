@@ -47,8 +47,10 @@ function main() {
     map.drawMap(pause);
 
     if (!pause) {
-      GameClock.update();
+
+      GameClock.startTick();
       waveMgr.update(onEnemyDeath);
+      GameClock.endTick();
       let enemies = waveMgr.drawWave();
       towers.forEach((tower) => {
         if (enemies.length !== 0) {
@@ -67,6 +69,7 @@ function main() {
 
     rightPanel.draw(pause);
     topPanel.draw(waveMgr.waveNumber());
+
     r.EndDrawing();
   }
 
