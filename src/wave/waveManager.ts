@@ -2,7 +2,7 @@ import r from "raylib";
 import Enemy from "../enemies/enemy";
 import { warn } from "console";
 import Base from "../bases/base";
-import { FirstWave, Wave } from "./wave";
+import { FirstWave, SecondWave, Wave } from "./wave";
 import { GameClock } from "../utils/game-clock";
 
 export default class WaveManager {
@@ -13,16 +13,26 @@ export default class WaveManager {
   constructor(enemyPath: r.Vector2[], base: Base) {
     this.enemyPath = enemyPath;
     this.base = base;
-    this.wave = new FirstWave();
+    this.wave = new FirstWave(this.onWaveCompleted);
   }
 
   reset() {
-    this.wave = new FirstWave();
+    this.wave = new FirstWave(this.onWaveCompleted);
+  }
+
+  onWaveCompleted() {
+    if (this.wave instanceof FirstWave) {
+      this.wave = new SecondWave();
+    }
   }
 
   waveNumber(): number {
     if (this.wave instanceof FirstWave) {
       return 1;
+    }
+
+    if (this.wave instanceof SecondWave) {
+      return 2;
     }
 
     throw new Error('Invalid wave');
