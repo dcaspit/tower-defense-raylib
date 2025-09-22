@@ -48,11 +48,11 @@ export default class WaveManager {
       // TODO: Change to base's position
       if (enemy.currentPathIndex == this.enemyPath.length - 1) {
         enemy.reachedBase = true;
-        this.removeDeadEnemies(onEnemyDeath);
         this.base.takeDamage();
       }
     });
 
+    this.removeDeadEnemies(onEnemyDeath);
     this.wave.updateWave();
   }
 
