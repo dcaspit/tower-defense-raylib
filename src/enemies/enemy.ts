@@ -5,14 +5,14 @@ export default class Enemy {
   pos: r.Vector2 = { x: 0, y: 0 };
   healthBar: HealthBar;
   enemySize = 40;
-  //enemyTexture: r.Texture;
+  enemyTexture: r.Texture;
   health = 20;
   currentPathIndex: number = 0;
   reachedBase = false;
 
   constructor(public index: number) {
     this.healthBar = new HealthBar(this.health);
-    //this.enemyTexture = undefined //r.LoadTexture('assets/enemy.png');
+    this.enemyTexture = r.LoadTexture('assets/enemy.png');
   }
 
   takeDamage(power: number) {
@@ -31,27 +31,27 @@ export default class Enemy {
   }
 
   drawEnemyTexture() {
-    r.DrawRectangle(this.pos.x, this.pos.y, 10, 10, r.RED);
-    return;
-    // const dest = {
-    //  x: this.pos.x,
-    // y: this.pos.y,
-    // width: this.enemySize,
-    // height: this.enemySize,
-    // };
-    // const src = {
-    //   x: 0,
-    //   y: 0,
-    //   width: this.enemyTexture.width,
-    //   height: this.enemyTexture.height,
-    // };
-    // r.DrawTexturePro(
-    //  this.enemyTexture,
-    //  src,
-    //  dest,
-    //  { x: 0, y: 0 },
-    //  0,
-    //  r.WHITE,
-    //);
+    //r.DrawRectangle(this.pos.x, this.pos.y, 10, 10, r.RED);
+    //return;
+    const dest = {
+      x: this.pos.x,
+      y: this.pos.y,
+      width: this.enemySize,
+      height: this.enemySize,
+    };
+    const src = {
+      x: 0,
+      y: 0,
+      width: this.enemyTexture.width,
+      height: this.enemyTexture.height,
+    };
+    r.DrawTexturePro(
+      this.enemyTexture,
+      src,
+      dest,
+      { x: 0, y: 0 },
+      0,
+      r.WHITE,
+    );
   }
 }

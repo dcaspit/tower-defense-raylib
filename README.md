@@ -35,6 +35,7 @@
 - [x] We can put more then 1 tower in the same spot
 - [x] Enemies not being fired immediatly when entering a circle around a tower
 - [ ] Not sure - It seems that many towers not damage enemy as expected
+- [ ] Enemies don't die
 
 ## Sprites 
 - [ ] Walking Enemy 

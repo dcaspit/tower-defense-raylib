@@ -22,7 +22,7 @@ export default class WaveManager {
 
   onWaveCompleted() {
     if (this.wave instanceof FirstWave) {
-      this.wave = new SecondWave();
+      this.wave = new SecondWave(this.onWaveCompleted);
     }
   }
 
