@@ -6,6 +6,7 @@ import { Tower } from "./towers/tower";
 import { RightPanel } from "./panels/rightPanel";
 import { TopPanel } from "./panels/topPanel";
 import { GameClock } from "./utils/game-clock";
+import { Projectile } from "./towers/projectile";
 
 function main() {
   r.InitWindow(screenWidth, screenHeight, "Tower Defense");
@@ -16,6 +17,8 @@ function main() {
   const addTower = (pos: r.Vector2) => {
     towers.push(new Tower(pos.x, pos.y));
   };
+
+  const projectiles: Projectile[] = [];
 
   const onBaseDeath = () => {
     waveMgr.reset()

@@ -4,15 +4,15 @@ import HealthBar from './healthBar';
 export default class Enemy {
   pos: r.Vector2 = { x: 0, y: 0 };
   healthBar: HealthBar;
-  enemySize = 40;
-  enemyTexture: r.Texture;
+  size = 40;
+  texture: r.Texture;
   health = 20;
   currentPathIndex: number = 0;
   reachedBase = false;
 
   constructor(public index: number) {
     this.healthBar = new HealthBar(this.health);
-    this.enemyTexture = r.LoadTexture('assets/enemy.png');
+    this.texture = r.LoadTexture('assets/enemy.png');
   }
 
   takeDamage(power: number) {
@@ -36,17 +36,17 @@ export default class Enemy {
     const dest = {
       x: this.pos.x,
       y: this.pos.y,
-      width: this.enemySize,
-      height: this.enemySize,
+      width: this.size,
+      height: this.size,
     };
     const src = {
       x: 0,
       y: 0,
-      width: this.enemyTexture.width,
-      height: this.enemyTexture.height,
+      width: this.texture.width,
+      height: this.texture.height,
     };
     r.DrawTexturePro(
-      this.enemyTexture,
+      this.texture,
       src,
       dest,
       { x: 0, y: 0 },

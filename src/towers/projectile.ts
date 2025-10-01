@@ -3,32 +3,32 @@ import Enemy from '../enemies/enemy';
 
 export class Projectile {
 
-  projectile: r.Vector2 = { x: 0, y: 0 };
-  projectileTexture: r.Texture;
-  projectileSize = 20;
+  location: r.Vector2 = { x: 0, y: 0 };
+  texture: r.Texture;
+  size = 20;
   state: '' | 'targetDead' = 'targetAlive';
 
   constructor(private enemy: Enemy, tower: r.Vector2) {
-    this.projectile.x = tower.x / 2;
-    this.projectile.y = tower.y / 2;
-    this.projectileTexture = r.LoadTexture("assets/projectile.png");
+    this.location.x = tower.x / 2;
+    this.location.y = tower.y / 2;
+    this.texture = r.LoadTexture("assets/projectile.png");
   }
 
   drawProjectile() {
     const dest = {
-      x: this.projectile.x - this.projectileSize / 2,
-      y: this.projectile.y - this.projectileSize / 2,
-      width: this.projectileSize,
-      height: this.projectileSize,
+      x: this.location.x - this.size / 2,
+      y: this.location.y - this.size / 2,
+      width: this.size,
+      height: this.size,
     };
     const src = {
       x: 0,
       y: 0,
-      width: this.projectileTexture.width,
-      height: this.projectileTexture.height,
+      width: this.texture.width,
+      height: this.texture.height,
     };
     r.DrawTexturePro(
-      this.projectileTexture,
+      this.texture,
       src,
       dest,
       { x: 0, y: 0 },
@@ -43,10 +43,10 @@ export class Projectile {
     // Check if projectile collides with current target
     // Use proper AABB collision detection with projectile and enemy sizes
     if (
-      this.projectile.x - this.projectileSize / 2 < this.enemy.pos.x + this.enemy.enemySize &&
-      this.projectile.x + this.projectileSize / 2 > this.enemy.pos.x &&
-      this.projectile.y - this.projectileSize / 2 < this.enemy.pos.y + this.enemy.enemySize &&
-      this.projectile.y + this.projectileSize / 2 > this.enemy.pos.y
+      this.location.x - this.size / 2 < this.enemy.pos.x + this.enemy.size &&
+      this.location.x + this.size / 2 > this.enemy.pos.x &&
+      this.location.y - this.size / 2 < this.enemy.pos.y + this.enemy.size &&
+      this.location.y + this.size / 2 > this.enemy.pos.y
     ) {
       // Hit the target, handle collision
       this.enemy.takeDamage(5);
@@ -57,10 +57,10 @@ export class Projectile {
     }
 
     // Aim at the center of the enemy for better accuracy
-    const targetCenterX = this.enemy.pos.x + this.enemy.enemySize / 2;
-    const targetCenterY = this.enemy.pos.y + this.enemy.enemySize / 2;
-    const dx = targetCenterX - this.projectile.x;
-    const dy = targetCenterY - this.projectile.y;
+    const targetCenterX = this.enemy.pos.x + this.enemy.size / 2;
+    const targetCenterY = this.enemy.pos.y + this.enemy.size / 2;
+    const dx = targetCenterX - this.location.x;
+    const dy = targetCenterY - this.location.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     // Avoid division by zero and handle very close targets
@@ -79,8 +79,8 @@ export class Projectile {
     const projectileSpeed = 1.2; // adjust speed as needed
 
     // Move projectile using the calculated direction
-    this.projectile.x += directionX * projectileSpeed;
-    this.projectile.y += directionY * projectileSpeed;
+    this.location.x += directionX * projectileSpeed;
+    this.location.y += directionY * projectileSpeed;
   }
 
 }
