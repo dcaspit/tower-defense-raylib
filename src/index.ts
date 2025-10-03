@@ -18,11 +18,11 @@ function main() {
     towers.push(new Tower(pos.x, pos.y));
   };
 
-  const projectiles: Projectile[] = [];
+  let projectiles: Projectile[] = [];
 
   const onBaseDeath = () => {
     waveMgr.reset()
-    towers.forEach((tower) => tower.resetProjectile())
+    projectiles = [];
     pause = true;
   };
 
@@ -33,7 +33,7 @@ function main() {
     pause = !pause;
     if (pause) {
       waveMgr.reset();
-      towers.forEach((tower) => tower.resetProjectile());
+      projectiles = [];
     }
   };
 
@@ -50,19 +50,23 @@ function main() {
     map.drawMap(pause);
 
     if (!pause) {
+      projectiles = projectiles.filter((p) => p.state !== 'reached');
       GameClock.startTick();
       waveMgr.update(onEnemyDeath);
       GameClock.endTick();
       let enemies = waveMgr.drawWave();
       towers.forEach((tower) => {
         if (enemies.length !== 0) {
-          const pro = tower.checkIfEnemyWithinTowerRange(enemies);
-          pro.forEach((p) => {
-            p.updateProjectile();
-            p.drawProjectile();
-          });
+          const projectile = tower.isEnemyWithinTowerRange(enemies);
+          if(projectile !== null) {
+            projectiles.push(projectile);
+          }
         }
         tower.draw();
+      });
+      projectiles.forEach((p) => {
+        p.updateProjectile();
+        p.drawProjectile();
       });
     } else {
       towers.forEach((tower) => {

@@ -6,7 +6,7 @@ export class Projectile {
   location: r.Vector2 = { x: 0, y: 0 };
   texture: r.Texture;
   size = 20;
-  state: '' | 'targetDead' = 'targetAlive';
+  state: 'locked' | 'reached' = 'locked';
 
   constructor(private enemy: Enemy, tower: r.Vector2) {
     this.location.x = tower.x / 2;
@@ -50,9 +50,7 @@ export class Projectile {
     ) {
       // Hit the target, handle collision
       this.enemy.takeDamage(5);
-      this.resetProjectile();
-      this.shouldShot = false;
-      this.enemy = null;
+      this.state = 'reached';
       return;
     }
 
@@ -66,10 +64,8 @@ export class Projectile {
     // Avoid division by zero and handle very close targets
     if (distance < 0.1) {
       // Target reached, trigger collision
-      this.enemy.takeDamage(this.power);
-      this.resetProjectile();
-      this.shouldShot = false;
-      this.enemy = null;
+      this.enemy.takeDamage(5);
+      this.state = 'reached';
       return;
     }
 
