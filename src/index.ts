@@ -47,8 +47,6 @@ function main() {
   };
 
   while (!r.WindowShouldClose()) {
-
-
     // Update Phase
     if (!pause) {
       GameClock.startTick();

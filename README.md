@@ -34,8 +34,8 @@
 ## Bugs
 - [x] We can put more then 1 tower in the same spot
 - [x] Enemies not being fired immediatly when entering a circle around a tower
-- [ ] Not sure - It seems that many towers not damage enemy as expected
-- [ ] Enemies don't die
+- [x] Not sure - It seems that many towers not damage enemy as expected
+- [x] Enemies don't die
 
 ## Sprites 
 - [ ] Walking Enemy 
@@ -53,7 +53,8 @@
     - Five leves bases (like tower)
 
 ## Investigation
-- [ ] Investigate another games and see what they are doing when enemies stack at the end of the path. are they overlap each other or lined up?  
+- [x] Investigate another games and see what they are doing when enemies stack at the end of the path. are they overlap each other or lined up?  
+    - Decided to kill enemies when they reach the base
 
 ## Nice to have
 - [ ] Cards each wave for perks (Pick a perk each wave)
