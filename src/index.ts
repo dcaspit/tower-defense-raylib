@@ -21,16 +21,23 @@ function main() {
     towers.push(new Tower(pos.x, pos.y));
   };
 
-  let projectiles: Projectile[] = [];
-
   const onBaseDeath = () => {
-    waveMgr.reset()
+    waveMgr.reset();
     projectiles = [];
     pause = true;
   };
 
+  const onWaveCompleted = () => {
+    projectiles = [];
+    pause = true;
+  }
+
   const map = new GameMap(addTower, onBaseDeath);
-  const waveMgr = new WaveManager(map.enemyPath, map.base);
+  const waveMgr = new WaveManager(map.enemyPath, map.base, onWaveCompleted);
+
+
+  let projectiles: Projectile[] = [];
+
 
   const onStart = () => {
     pause = !pause;

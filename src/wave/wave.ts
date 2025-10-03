@@ -4,7 +4,7 @@ import { GameClock } from "../utils/game-clock";
 export interface Wave {
   enemies: Enemy[];
 
-  updateWave(): void;
+  updateWave(): boolean;
 }
 
 export class FirstWave implements Wave {
@@ -14,14 +14,18 @@ export class FirstWave implements Wave {
   private lastSpawnTime: number = -1;
   private waveStartTime: number = 0;
 
-  constructor(private onWaveCompleted: () => void) {
+  constructor() {
     this.enemies = [];
     this.waveStartTime = GameClock.getTime();
   }
 
   private enemyCount = 0;
 
-  updateWave(): void {
+  updateWave(): boolean {
+    if (this.enemyCount >= 10) {
+      return true;
+    }
+
     const currentSecond = GameClock.getTime();
     const timeSinceWaveStart = currentSecond - this.waveStartTime;
 
@@ -49,6 +53,8 @@ export class FirstWave implements Wave {
         this.waveStartTime = currentSecond;
       }
     }
+
+    return false;
   }
 
   removeDeadEnemies() {
@@ -64,27 +70,27 @@ export class SecondWave implements Wave {
   private lastSpawnTime: number = -1;
   private waveStartTime: number = 0;
 
-  constructor(private onWaveCompleted: () => void) {
+  constructor() {
     this.enemies = [];
     this.waveStartTime = GameClock.getTime();
   }
 
   private enemyCount = 0;
 
-  updateWave(): void {
+  updateWave(): boolean {
     const currentSecond = GameClock.getTime();
     const timeSinceWaveStart = currentSecond - this.waveStartTime;
 
     if (this.waveState === 'spawning') {
       // Spawn 5 enemies with 1-second intervals
-      if (this.enemiesSpawned < 5 && this.lastSpawnTime !== currentSecond) {
+      if (this.enemiesSpawned < 3 && this.lastSpawnTime !== currentSecond) {
         this.enemyCount++;
         this.enemies.push(new Enemy(this.enemyCount));
         console.log('Enemy Added: ', this.enemyCount);
         this.enemiesSpawned++;
         this.lastSpawnTime = currentSecond;
 
-        if (this.enemiesSpawned >= 5) {
+        if (this.enemiesSpawned >= 3) {
           this.waveState = 'waiting';
         }
       }
@@ -97,6 +103,8 @@ export class SecondWave implements Wave {
         this.waveStartTime = currentSecond;
       }
     }
+
+    return false;
   }
 
   removeDeadEnemies() {

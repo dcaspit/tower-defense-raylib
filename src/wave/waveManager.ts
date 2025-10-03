@@ -10,20 +10,21 @@ export default class WaveManager {
   wave: Wave;
   base: Base;
 
-  constructor(enemyPath: r.Vector2[], base: Base) {
+  constructor(enemyPath: r.Vector2[], base: Base, private onWaveComplete: () => void) {
     this.enemyPath = enemyPath;
     this.base = base;
-    this.wave = new FirstWave(this.onWaveCompleted);
+    this.wave = new FirstWave();
   }
 
   reset() {
-    this.wave = new FirstWave(this.onWaveCompleted);
+    this.wave = new FirstWave();
   }
 
   onWaveCompleted() {
     if (this.wave instanceof FirstWave) {
-      this.wave = new SecondWave(this.onWaveCompleted);
+      this.wave = new SecondWave();
     }
+    this.onWaveComplete();
   }
 
   waveNumber(): number {
@@ -53,7 +54,10 @@ export default class WaveManager {
     });
 
     this.removeDeadEnemies(onEnemyDeath);
-    this.wave.updateWave();
+    const completed = this.wave.updateWave();
+    if (completed) {
+      this.onWaveCompleted();
+    }
   }
 
   removeDeadEnemies(onEnemyDeath: () => void) {
