@@ -68,7 +68,7 @@ export default class WaveManager {
     this.wave.enemies = this.wave.enemies.filter(enemy => enemy.health > 0 && !enemy.reachedBase);
   }
 
-  drawWave(): Enemy[] {
+  drawWave() {
     // Only draw if we have a valid position
     this.wave.enemies.forEach((enemy) => {
       if (enemy.currentPathIndex < this.enemyPath.length - 1) {
@@ -76,7 +76,9 @@ export default class WaveManager {
         enemy.draw(currentPos);
       }
     });
+  }
 
+  enemies(): Enemy[] {
     return this.wave.enemies;
   }
 

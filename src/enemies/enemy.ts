@@ -24,6 +24,7 @@ export default class Enemy {
   }
 
   draw(position: r.Vector2) {
+    if (this.health <= 0) return;
     this.pos.x = position.x + 5;
     this.pos.y = position.y + 5;
     this.healthBar.draw(position, this.health);

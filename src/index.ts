@@ -47,28 +47,38 @@ function main() {
   };
 
   while (!r.WindowShouldClose()) {
-    r.BeginDrawing();
-    r.ClearBackground(r.RAYWHITE);
 
-    map.drawMap(pause);
 
+    // Update Phase
     if (!pause) {
-      projectiles = projectiles.filter((p) => p.state !== 'reached');
       GameClock.startTick();
+      projectiles = projectiles.filter((p) => p.state !== 'reached');
       waveMgr.update(onEnemyDeath);
-      GameClock.endTick();
-      let enemies = waveMgr.drawWave();
-      towers.forEach((tower) => {
-        if (enemies.length !== 0) {
+      const enemies = waveMgr.enemies();
+      if (enemies.length !== 0) {
+        towers.forEach((tower) => {
           const projectile = tower.isEnemyWithinTowerRange(enemies);
           if (projectile !== null) {
             projectiles.push(projectile);
           }
-        }
+        });
+      }
+      projectiles.forEach((p) => {
+        p.updateProjectile();
+      });
+      GameClock.endTick();
+    }
+
+    //Draw Phase
+    r.BeginDrawing();
+    r.ClearBackground(r.RAYWHITE);
+    map.drawMap(pause);
+    if (!pause) {
+      waveMgr.drawWave();
+      towers.forEach((tower) => {
         tower.draw();
       });
       projectiles.forEach((p) => {
-        p.updateProjectile();
         p.drawProjectile();
       });
     } else {
@@ -80,6 +90,7 @@ function main() {
     rightPanel.draw(pause);
     topPanel.draw(waveMgr.waveNumber());
     r.EndDrawing();
+
   }
 
   r.CloseWindow();
