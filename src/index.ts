@@ -7,10 +7,13 @@ import { RightPanel } from "./panels/rightPanel";
 import { TopPanel } from "./panels/topPanel";
 import { GameClock } from "./utils/game-clock";
 import { Projectile } from "./towers/projectile";
+import { Textures } from "./utils/textures";
 
 function main() {
   r.InitWindow(screenWidth, screenHeight, "Tower Defense");
   r.SetTargetFPS(60);
+
+  Textures.load();
 
   let pause = true;
   const towers: Tower[] = [];
@@ -58,7 +61,7 @@ function main() {
       towers.forEach((tower) => {
         if (enemies.length !== 0) {
           const projectile = tower.isEnemyWithinTowerRange(enemies);
-          if(projectile !== null) {
+          if (projectile !== null) {
             projectiles.push(projectile);
           }
         }

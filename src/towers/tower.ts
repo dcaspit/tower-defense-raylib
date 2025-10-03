@@ -48,17 +48,18 @@ export class Tower {
 
   isEnemyWithinTowerRange(enemies: Enemy[]): Projectile | null {
     // If projectile is already fired, keep tracking current target
-    if (this.state === "shooting") null;
+    if (this.state === "shooting") return null;
 
     const projectiles: Projectile[] = [];
     // Find closest enemy within range
     let closestEnemy: Enemy | null = null;
     let closestDistance = 100; // Tower range
-    const towerCenter = this.position.x + this.towerSize / 2
+    const towerCenterX = this.position.x + this.towerSize / 2;
+    const towerCenterY = this.position.y + this.towerSize / 2;
 
     for (const enemy of enemies) {
-      const dx = enemy.pos.x + enemy.size / 2 - towerCenter;
-      const dy = enemy.pos.y + enemy.size / 2 - towerCenter;
+      const dx = enemy.pos.x + enemy.size / 2 - towerCenterX;
+      const dy = enemy.pos.y + enemy.size / 2 - towerCenterY;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance <= 100 && distance < closestDistance) {
@@ -67,12 +68,13 @@ export class Tower {
       }
     }
 
-    if (closestEnemy) {
+    if (closestEnemy && this.state === 'idle') {
       this.state = "shooting";
-      return new Projectile(closestEnemy, this.position);
+      return new Projectile(closestEnemy, { x: towerCenterX, y: towerCenterY }, () => {
+        this.state = 'idle';
+      });
     }
 
-    this.state = "idle";
     return null;
   }
 }
