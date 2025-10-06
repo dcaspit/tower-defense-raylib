@@ -2,41 +2,58 @@ import r from "raylib";
 import Enemy from "../enemies/enemy";
 import { warn } from "console";
 import Base from "../bases/base";
-import { FirstWave, SecondWave, Wave } from "./wave";
+import { Wave } from "./wave";
 import { GameClock } from "../utils/game-clock";
+
+export const waves = [
+  {
+    totalEnemies: 6,
+    enemiesPerWave: 3,
+    waveTime: 10
+  },
+
+  {
+    totalEnemies: 8,
+    enemiesPerWave: 4,
+    waveTime: 10
+  },
+
+  {
+    totalEnemies: 10,
+    enemiesPerWave: 5,
+    waveTime: 10
+  }
+];
 
 export default class WaveManager {
   enemyPath: r.Vector2[];
   wave: Wave;
+  waveCount: number = 0;
   base: Base;
 
-  constructor(enemyPath: r.Vector2[], base: Base, private onWaveComplete: () => void) {
+  constructor(enemyPath: r.Vector2[], base: Base, private onWaveComplete: () => void, private onGameOver: () => void) {
     this.enemyPath = enemyPath;
     this.base = base;
-    this.wave = new FirstWave();
+    this.wave = new Wave(waves[0]);
   }
 
   reset() {
-    this.wave = new FirstWave();
+    this.wave = new Wave(waves[0]);
+    this.waveCount = 0;
   }
 
   onWaveCompleted() {
-    if (this.wave instanceof FirstWave) {
-      this.wave = new SecondWave();
+    if (this.waveCount === waves.length) {
+      this.onGameOver();
+    } else {
+      this.waveCount++;
+      this.wave = new Wave(waves[this.waveCount])
     }
     this.onWaveComplete();
   }
 
   waveNumber(): number {
-    if (this.wave instanceof FirstWave) {
-      return 1;
-    }
-
-    if (this.wave instanceof SecondWave) {
-      return 2;
-    }
-
-    throw new Error('Invalid wave');
+    return this.waveCount;
   }
 
   update(onEnemyDeath: () => void) {

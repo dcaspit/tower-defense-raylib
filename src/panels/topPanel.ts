@@ -10,7 +10,7 @@ export class TopPanel {
   wavePosition: r.Vector2 = { x: this.bgWidth - 50, y: 20 };
   goldTexture: r.Texture2D;
 
-  constructor() {
+  constructor(private totalWaves: number) {
     this.goldTexture = r.LoadTexture('assets/gold.png');
   }
 
@@ -21,7 +21,7 @@ export class TopPanel {
   }
 
   drawWaveCount(wave: number) {
-    r.DrawText(`${wave}/10`, this.wavePosition.x, this.wavePosition.y, 15, r.BLACK);
+    r.DrawText(`${wave + 1}/${this.totalWaves}`, this.wavePosition.x, this.wavePosition.y, 15, r.BLACK);
     r.DrawText('Wave: ', this.wavePosition.x - 45, this.wavePosition.y, 15, r.BLACK);
   }
 
