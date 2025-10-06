@@ -4,6 +4,7 @@ export class GameClock {
   private static frameCount: number = 0;
   private static seconds: number = 0;
   private static framesPerMove: number = 60;
+  private static callbacks: Map<number, (() => void)[]> = new Map();
 
   static startTick() {
     this.frameCount++;
@@ -13,6 +14,13 @@ export class GameClock {
     if (this.sixtyFramesPassed()) {
       this.frameCount = 0;
       this.seconds++;
+
+      // Trigger callbacks registered for this second
+      const secondCallbacks = this.callbacks.get(this.seconds);
+      if (secondCallbacks) {
+        secondCallbacks.forEach(callback => callback());
+        this.callbacks.delete(this.seconds);
+      }
     }
   }
 
@@ -23,6 +31,7 @@ export class GameClock {
   static reset() {
     this.frameCount = 0;
     this.seconds = 0;
+    this.callbacks.clear();
   }
 
   static getTime() {
@@ -31,5 +40,15 @@ export class GameClock {
 
   static translitionFactor(): number {
     return this.frameCount / this.framesPerMove;
+  }
+
+  static count(seconds: number, callback: () => void): void {
+    const targetSecond = this.seconds + seconds;
+
+    if (!this.callbacks.has(targetSecond)) {
+      this.callbacks.set(targetSecond, []);
+    }
+
+    this.callbacks.get(targetSecond)!.push(callback);
   }
 }

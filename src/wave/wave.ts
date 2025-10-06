@@ -22,7 +22,7 @@ export class FirstWave implements Wave {
   private enemyCount = 0;
 
   updateWave(): boolean {
-    if (this.enemyCount >= 10) {
+    if (this.enemyCount >= 10 && this.enemies.length === 0) {
       return true;
     }
 

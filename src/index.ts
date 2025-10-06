@@ -16,6 +16,8 @@ function main() {
   Textures.load();
 
   let pause = true;
+  let waveCompleted = false;
+
   const towers: Tower[] = [];
   const addTower = (pos: r.Vector2) => {
     towers.push(new Tower(pos.x, pos.y));
@@ -29,7 +31,11 @@ function main() {
 
   const onWaveCompleted = () => {
     projectiles = [];
-    pause = true;
+    waveCompleted = true;
+    GameClock.count(5, () => {
+      waveCompleted = false;
+      pause = true;
+    });
   }
 
   const map = new GameMap(addTower, onBaseDeath);
@@ -55,8 +61,9 @@ function main() {
 
   while (!r.WindowShouldClose()) {
     // Update Phase
-    if (!pause) {
-      GameClock.startTick();
+
+    GameClock.startTick();
+    if (!pause && !waveCompleted) {
       projectiles = projectiles.filter((p) => p.state !== 'reached');
       waveMgr.update(onEnemyDeath);
       const enemies = waveMgr.enemies();
@@ -71,14 +78,14 @@ function main() {
       projectiles.forEach((p) => {
         p.updateProjectile();
       });
-      GameClock.endTick();
     }
+    GameClock.endTick();
 
     //Draw Phase
     r.BeginDrawing();
     r.ClearBackground(r.RAYWHITE);
     map.drawMap(pause);
-    if (!pause) {
+    if (!pause && !waveCompleted) {
       waveMgr.drawWave();
       towers.forEach((tower) => {
         tower.draw();
@@ -90,6 +97,10 @@ function main() {
       towers.forEach((tower) => {
         tower.draw();
       });
+      if (waveCompleted) {
+        r.DrawRectangle(screenHeight / 2 - 50, screenWidth / 2 - 25, 100, 50, r.RED);
+        r.DrawText('Wave Completed', (screenHeight / 2 - 50) + 10, (screenWidth / 2 - 50) + 20, 15, r.BLACK);
+      }
     }
 
     rightPanel.draw(pause);
