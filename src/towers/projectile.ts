@@ -7,7 +7,7 @@ export class Projectile {
   size = 20;
   state: 'locked' | 'reached' = 'locked';
 
-  constructor(private enemy: Enemy, private tower: r.Vector2, private onProjectileHit: () => void) {
+  constructor(private enemy: Enemy, private position: r.Vector2, private onProjectileHit: () => void) {
     this.texture = Textures.projectile();
   }
 
@@ -18,8 +18,8 @@ export class Projectile {
       return;
     }
     const dest = {
-      x: this.tower.x - this.size / 2,
-      y: this.tower.y - this.size / 2,
+      x: this.position.x - this.size / 2,
+      y: this.position.y - this.size / 2,
       width: this.size,
       height: this.size,
     };
@@ -49,12 +49,13 @@ export class Projectile {
     // Check if projectile collides with current target
     // Use proper AABB collision detection with projectile and enemy sizes
     if (
-      this.tower.x - this.size / 2 < this.enemy.pos.x + this.enemy.size &&
-      this.tower.x + this.size / 2 > this.enemy.pos.x &&
-      this.tower.y - this.size / 2 < this.enemy.pos.y + this.enemy.size &&
-      this.tower.y + this.size / 2 > this.enemy.pos.y
+      this.position.x + this.size >= this.enemy.pos.x &&
+      this.position.x <= this.enemy.pos.x + this.enemy.size &&
+      this.position.y <= this.enemy.pos.y + this.enemy.size &&
+      this.position.y + this.size >= this.enemy.pos.y
     ) {
       // Hit the target, handle collision
+      console.log('colide');
       this.enemy.takeDamage(5);
       this.state = 'reached';
       this.onProjectileHit();
@@ -64,27 +65,17 @@ export class Projectile {
     // Aim at the center of the enemy for better accuracy
     const targetCenterX = this.enemy.pos.x + this.enemy.size / 2;
     const targetCenterY = this.enemy.pos.y + this.enemy.size / 2;
-    const dx = targetCenterX - this.tower.x;
-    const dy = targetCenterY - this.tower.y;
+    const dx = targetCenterX - this.position.x;
+    const dy = targetCenterY - this.position.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
-
-    // Avoid division by zero and handle very close targets
-    if (distance < 0.1) {
-      // Target reached, trigger collision
-      this.enemy.takeDamage(5);
-      this.state = 'reached';
-      this.onProjectileHit();
-      return;
-    }
-
     const directionX = dx / distance;
     const directionY = dy / distance;
 
-    const projectileSpeed = 1.2; // adjust speed as needed
+    const projectileSpeed = 1.0; // adjust speed as needed
 
     // Move projectile using the calculated direction
-    this.tower.x += directionX * projectileSpeed;
-    this.tower.y += directionY * projectileSpeed;
+    this.position.x += directionX * projectileSpeed;
+    this.position.y += directionY * projectileSpeed;
   }
 
 }

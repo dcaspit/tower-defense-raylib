@@ -41,9 +41,7 @@ function main() {
   const map = new GameMap(addTower, onBaseDeath);
   const waveMgr = new WaveManager(map.enemyPath, map.base, onWaveCompleted);
 
-
   let projectiles: Projectile[] = [];
-
 
   const onStart = () => {
     pause = !pause;
