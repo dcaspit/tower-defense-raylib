@@ -22,7 +22,7 @@ export class FirstWave implements Wave {
   private enemyCount = 0;
 
   updateWave(): boolean {
-    if (this.enemyCount >= 10) {
+    if (this.enemyCount >= 6) {
       if (this.enemies.length === 0) {
         return true;
       }
@@ -34,7 +34,7 @@ export class FirstWave implements Wave {
 
     if (this.waveState === 'spawning') {
       // Spawn 5 enemies with 1-second intervals
-      if (this.enemiesSpawned < 5 && this.lastSpawnTime !== currentSecond) {
+      if (this.enemiesSpawned < 3 && this.lastSpawnTime !== currentSecond) {
         this.enemyCount++;
         this.enemies.push(new Enemy(this.enemyCount));
         console.log('Enemy Added: ', this.enemyCount);
@@ -43,7 +43,7 @@ export class FirstWave implements Wave {
 
 
 
-        if (this.enemiesSpawned >= 5) {
+        if (this.enemiesSpawned >= 3) {
           this.waveState = 'waiting';
         }
       }

@@ -2,6 +2,7 @@ import r, { MOUSE_BUTTON_LEFT } from "raylib";
 import { screenHeight, screenWidth } from "../utils/consts";
 import { main_map } from "./maps";
 import Base from '../bases/base';
+import { Money } from "../utils/money";
 
 export const boxWidth = 50;
 export const boxHeight = 50;
@@ -10,11 +11,11 @@ export const topMargin = 50;
 export default class GameMap {
   enemyPath: r.Vector2[];
   enemyPathIntialized: boolean = false;
-  towersLocations: {col: number, row: number}[] = [];
+  towersLocations: { col: number, row: number }[] = [];
   base: Base;
 
-  constructor(private mouseClick: (pos: r.Vector2) => void, 
-             private onBaseDeath: () => void ) {
+  constructor(private mouseClick: (pos: r.Vector2) => void,
+    private onBaseDeath: () => void) {
     this.enemyPath = [];
     this.base = new Base(this.onBaseDeath);
     this.parseEnemyPath();
@@ -44,7 +45,7 @@ export default class GameMap {
         );
         // TODO: remove logic from draw
         // TODO: add remove tower logic
-        if (color === r.GREEN && pauseState && !this.towersLocations.find((loc) => loc.col === col && loc.row === row)) {
+        if (color === r.GREEN && pauseState && Money.enough(200) && !this.towersLocations.find((loc) => loc.col === col && loc.row === row)) {
           // Check if mouse is hovering over this rectangle
           if (this.isMouseInRec(col, row)) {
             // Draw a semi-transparent white overlay for highlight
@@ -58,7 +59,8 @@ export default class GameMap {
 
             if (r.IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
               this.mouseClick({ x: col * boxWidth, y: topMargin + row * boxHeight });
-              this.towersLocations.push({col: col, row: row});
+              this.towersLocations.push({ col: col, row: row });
+              Money.decrease(200);
             }
           }
         }

@@ -37,6 +37,11 @@
 - [x] Not sure - It seems that many towers not damage enemy as expected
 - [x] Enemies don't die
 
+## Tech Debts 
+- [ ] Create one class for waves.
+    - [ ] Class will get configuration of wave -> (spawnTime, monstersPerSpawn). // monstersPerSpawn <= spawnTime
+- [ ] Create 10 Configuration waves. 
+
 ## Sprites 
 - [ ] Walking Enemy 
     - [ ] Left

@@ -1,5 +1,6 @@
 import r from 'raylib';
 import { screenWidth } from '../utils/consts';
+import { Money } from '../utils/money';
 
 export class TopPanel {
   bgWidth = screenWidth - 150;
@@ -8,7 +9,6 @@ export class TopPanel {
   goldPosition: r.Vector2 = { x: 20, y: 20 };
   wavePosition: r.Vector2 = { x: this.bgWidth - 50, y: 20 };
   goldTexture: r.Texture2D;
-  private money: number = 200;
 
   constructor() {
     this.goldTexture = r.LoadTexture('assets/gold.png');
@@ -27,7 +27,7 @@ export class TopPanel {
 
   drawMoney() {
     r.DrawText(
-      `${this.money}`,
+      `${Money.get()}`,
       this.goldPosition.x,
       this.goldPosition.y,
       15,
@@ -64,10 +64,6 @@ export class TopPanel {
       this.bgHeight,
       { r: r.BROWN.r, g: r.BROWN.g, b: r.BROWN.b, a: r.BROWN.a - 10 }
     )
-  }
-
-  addMoney() {
-    this.money += 50;
   }
 
 }

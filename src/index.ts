@@ -8,12 +8,14 @@ import { TopPanel } from "./panels/topPanel";
 import { GameClock } from "./utils/game-clock";
 import { Projectile } from "./towers/projectile";
 import { Textures } from "./utils/textures";
+import { Money } from "./utils/money";
 
 function main() {
   r.InitWindow(screenWidth, screenHeight, "Tower Defense");
   r.SetTargetFPS(60);
 
   Textures.load();
+  Money.get();
 
   let pause = true;
   let waveCompleted = false;
@@ -54,7 +56,7 @@ function main() {
   const rightPanel = new RightPanel(onStart);
   const topPanel = new TopPanel();
   const onEnemyDeath = () => {
-    topPanel.addMoney();
+    Money.increase(50);
   };
 
   while (!r.WindowShouldClose()) {
