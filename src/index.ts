@@ -9,8 +9,17 @@ function main() {
 
   Textures.load();
 
-  let game = new Game();
+  let game: Game = new Game();
   game.start();
+
+  while (!r.WindowShouldClose()) {
+    // Update Phase
+
+    r.BeginDrawing();
+    r.ClearBackground(r.RAYWHITE);
+    // Draw Phase
+    r.EndDrawing();
+  }
 
   r.CloseWindow();
 }
