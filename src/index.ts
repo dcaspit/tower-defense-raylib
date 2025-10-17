@@ -14,10 +14,12 @@ function main() {
 
   while (!r.WindowShouldClose()) {
     // Update Phase
+    game.update();
 
     r.BeginDrawing();
     r.ClearBackground(r.RAYWHITE);
     // Draw Phase
+    game.draw();
     r.EndDrawing();
   }
 

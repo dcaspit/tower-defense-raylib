@@ -44,6 +44,16 @@ export class Game {
     this.waveCompleted = false;
     this.towers = [];
   }
+  private onStart = () => {
+    this.pause = !this.pause;
+    if (this.pause) {
+      this.waveMgr.reset();
+      this.projectiles = [];
+    }
+  };
+
+  private rightPanel = new RightPanel(this.onStart);
+  private topPanel = new TopPanel(waves.length);
 
   constructor() {
     this.map = new GameMap(this.addTower, this.onBaseDeath);
@@ -51,37 +61,17 @@ export class Game {
   }
 
   start() {
-
     Money.get();
-
-
-
-
-
-
-    const onStart = () => {
-      this.pause = !this.pause;
-      if (this.pause) {
-        waveMgr.reset();
-        projectiles = [];
-      }
-    };
-
-    const rightPanel = new RightPanel(onStart);
-    const topPanel = new TopPanel(waves.length);
-    const onEnemyDeath = () => {
-      Money.increase(50);
-    };
-
-
-
   }
+
   update() {
     // Update Phase
     GameClock.startTick();
     if (!this.pause && !this.waveCompleted) {
       this.projectiles = this.projectiles.filter((p) => p.state !== 'reached');
-      this.waveMgr.update(onEnemyDeath);
+      this.waveMgr.update(() => {
+        Money.increase(50);
+      });
       const enemies = this.waveMgr.enemies();
       if (enemies.length !== 0) {
         this.towers.forEach((tower) => {
@@ -99,7 +89,6 @@ export class Game {
   }
 
   draw() {
-
     //Draw Phase
     this.map.drawMap(this.pause);
     if (!this.pause && !this.waveCompleted) {
@@ -107,7 +96,7 @@ export class Game {
       this.towers.forEach((tower) => {
         tower.draw();
       });
-      projectiles.forEach((p) => {
+      this.projectiles.forEach((p) => {
         p.drawProjectile();
       });
     } else {
@@ -120,7 +109,7 @@ export class Game {
       }
     }
 
-    rightPanel.draw(this.pause);
-    topPanel.draw(waveMgr.waveNumber());
+    this.rightPanel.draw(this.pause);
+    this.topPanel.draw(this.waveMgr.waveNumber());
   }
 }
