@@ -27,9 +27,9 @@
 - [ ] Add 10 waves for the same map
 
 ### Main Menu 
-- [ ] Start Game
+- [x] Start Game
 - [ ] Leader Board
-- [ ] Quit
+- [x] Quit
 
 ## Bugs
 - [x] We can put more then 1 tower in the same spot
@@ -38,8 +38,8 @@
 - [x] Enemies don't die
 
 ## Tech Debts 
-- [ ] Create one class for waves.
-    - [ ] Class will get configuration of wave -> (spawnTime, monstersPerSpawn). // monstersPerSpawn <= spawnTime
+- [x] Create one class for waves.
+    - [x] Class will get configuration of wave -> (spawnTime, monstersPerSpawn). // monstersPerSpawn <= spawnTime
 - [ ] Create 10 Configuration waves. 
 
 ## Sprites 
