@@ -4,6 +4,7 @@ import { warn } from "console";
 import Base from "../bases/base";
 import { Wave } from "./wave";
 import { GameClock } from "../utils/game-clock";
+import { Money } from "../utils/money";
 
 export const waves = [
   {
@@ -37,13 +38,9 @@ export default class WaveManager {
     this.wave = new Wave(waves[0]);
   }
 
-  reset() {
-    this.wave = new Wave(waves[0]);
-    this.waveCount = 0;
-  }
-
   onWaveCompleted() {
-    if (this.waveCount === waves.length) {
+    console.log('wave count: ', this.waveCount, ' waves.length: ', waves.length);
+    if (this.waveCount + 1 === waves.length) {
       this.onGameOver();
     } else {
       this.waveCount++;
@@ -56,7 +53,7 @@ export default class WaveManager {
     return this.waveCount;
   }
 
-  update(onEnemyDeath: () => void) {
+  update() {
     if (!GameClock.sixtyFramesPassed()) return;
 
     this.wave.enemies.forEach((enemy) => {
@@ -68,24 +65,20 @@ export default class WaveManager {
         enemy.reachedBase = true;
         this.base.takeDamage();
       }
+      // onDeath
+      if (enemy.health <= 0) {
+        Money.increase(50);
+      }
     });
 
-    this.removeDeadEnemies(onEnemyDeath);
+    this.removeDeadEnemies();
     const completed = this.wave.updateWave();
     if (completed) {
       this.onWaveCompleted();
     }
   }
 
-  removeDeadEnemies(onEnemyDeath: () => void) {
-    this.wave.enemies.forEach((enemy, index) => {
-      if (enemy.health <= 0) {
-        onEnemyDeath();
-      }
-      if (enemy.reachedBase) {
-        console.log('Enemy Reached Base:', enemy.index);
-      }
-    })
+  removeDeadEnemies() {
     this.wave.enemies = this.wave.enemies.filter(enemy => enemy.health > 0 && !enemy.reachedBase);
   }
 

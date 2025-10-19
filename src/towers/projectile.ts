@@ -1,6 +1,6 @@
 import r from 'raylib';
 import Enemy from '../enemies/enemy';
-import { Textures } from '../utils/textures';
+import { Textures, TexturesTypes } from '../utils/textures';
 
 export class Projectile {
   texture: r.Texture;
@@ -8,7 +8,7 @@ export class Projectile {
   state: 'locked' | 'reached' = 'locked';
 
   constructor(private enemy: Enemy, private position: r.Vector2, private onProjectileHit: () => void) {
-    this.texture = Textures.projectile();
+    this.texture = Textures.asset(TexturesTypes.projectile);
   }
 
   drawProjectile() {

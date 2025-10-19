@@ -1,5 +1,6 @@
 import r from "raylib";
 import HealthBar from './healthBar';
+import { Textures, TexturesTypes } from "../utils/textures";
 
 export default class Enemy {
   pos: r.Vector2 = { x: 0, y: 0 };
@@ -12,7 +13,7 @@ export default class Enemy {
 
   constructor(public index: number) {
     this.healthBar = new HealthBar(this.health);
-    this.texture = r.LoadTexture('assets/enemy.png');
+    this.texture = Textures.asset(TexturesTypes.enemy);
   }
 
   takeDamage(power: number) {

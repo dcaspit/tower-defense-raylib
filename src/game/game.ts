@@ -12,10 +12,9 @@ import { Textures } from "../utils/textures";
 import { Money } from "../utils/money";
 
 export class Game {
-
-  pause = true;
-  waveCompleted = false;
-  towers: Tower[] = [];
+  private pause = true;
+  private waveCompleted = false;
+  private towers: Tower[] = [];
   private map: GameMap;
   private waveMgr: WaveManager;
   private projectiles: Projectile[] = [];
@@ -25,7 +24,6 @@ export class Game {
   };
 
   private onBaseDeath = () => {
-    this.waveMgr.reset();
     this.projectiles = [];
     this.pause = true;
   };
@@ -37,17 +35,11 @@ export class Game {
       this.waveCompleted = false;
       this.pause = true;
     });
-  }
+  };
 
-  private restart = () => {
-    this.pause = true;
-    this.waveCompleted = false;
-    this.towers = [];
-  }
   private onStart = () => {
     this.pause = !this.pause;
     if (this.pause) {
-      this.waveMgr.reset();
       this.projectiles = [];
     }
   };
@@ -55,61 +47,71 @@ export class Game {
   private rightPanel = new RightPanel(this.onStart);
   private topPanel = new TopPanel(waves.length);
 
-  constructor() {
+  constructor(onGameOver: () => void) {
     this.map = new GameMap(this.addTower, this.onBaseDeath);
-    this.waveMgr = new WaveManager(this.map.enemyPath, this.map.base, this.onWaveCompleted, this.restart);
-  }
-
-  start() {
-    Money.get();
+    this.waveMgr = new WaveManager(this.map.enemyPath, this.map.base, this.onWaveCompleted, onGameOver);
   }
 
   update() {
     // Update Phase
     GameClock.startTick();
-    if (!this.pause && !this.waveCompleted) {
-      this.projectiles = this.projectiles.filter((p) => p.state !== 'reached');
-      this.waveMgr.update(() => {
-        Money.increase(50);
-      });
-      const enemies = this.waveMgr.enemies();
-      if (enemies.length !== 0) {
-        this.towers.forEach((tower) => {
-          const projectile = tower.isEnemyWithinTowerRange(enemies);
-          if (projectile !== null) {
-            this.projectiles.push(projectile);
-          }
-        });
-      }
-      this.projectiles.forEach((p) => {
-        p.updateProjectile();
-      });
+    if (this.waveRunning()) {
+      this.updateWave();
     }
     GameClock.endTick();
+  }
+
+  private updateWave() {
+    this.projectiles = this.projectiles.filter((p) => p.state !== 'reached');
+    this.waveMgr.update();
+    const enemies = this.waveMgr.enemies();
+    if (enemies.length !== 0) {
+      this.towers.forEach((tower) => {
+        const projectile = tower.isEnemyWithinTowerRange(enemies);
+        if (projectile !== null) {
+          this.projectiles.push(projectile);
+        }
+      });
+    }
+    this.projectiles.forEach((p) => {
+      p.updateProjectile();
+    });
   }
 
   draw() {
     //Draw Phase
     this.map.drawMap(this.pause);
-    if (!this.pause && !this.waveCompleted) {
-      this.waveMgr.drawWave();
-      this.towers.forEach((tower) => {
-        tower.draw();
-      });
-      this.projectiles.forEach((p) => {
-        p.drawProjectile();
-      });
+    if (this.waveRunning()) {
+      this.drawWave();
     } else {
-      this.towers.forEach((tower) => {
-        tower.draw();
-      });
-      if (this.waveCompleted) {
-        r.DrawRectangle(screenHeight / 2 - 50, screenWidth / 2 - 25, 100, 50, r.RED);
-        r.DrawText('Wave Completed', (screenHeight / 2 - 50) + 10, (screenWidth / 2 - 50) + 20, 15, r.BLACK);
-      }
+      this.drawPause();
     }
 
     this.rightPanel.draw(this.pause);
     this.topPanel.draw(this.waveMgr.waveNumber());
+  }
+
+  private drawWave() {
+    this.waveMgr.drawWave();
+    this.towers.forEach((tower) => {
+      tower.draw();
+    });
+    this.projectiles.forEach((p) => {
+      p.drawProjectile();
+    });
+  }
+
+  private drawPause() {
+    this.towers.forEach((tower) => {
+      tower.draw();
+    });
+    if (this.waveCompleted) {
+      r.DrawRectangle(screenHeight / 2 - 50, screenWidth / 2 - 25, 100, 50, r.RED);
+      r.DrawText('Wave Completed', (screenHeight / 2 - 50) + 10, (screenWidth / 2 - 50) + 20, 15, r.BLACK);
+    }
+  }
+
+  private waveRunning(): boolean {
+    return !this.pause && !this.waveCompleted;
   }
 }
