@@ -1,6 +1,7 @@
 import r from "raylib";
 import Enemy from "../enemies/enemy";
 import { Projectile } from "./projectile";
+import { Textures, TexturesTypes } from "../utils/textures";
 
 export class Tower {
   power: number = 1;
@@ -13,7 +14,7 @@ export class Tower {
   constructor(x: number, y: number) {
     this.position.x = x;
     this.position.y = y;
-    this.towerTexture = r.LoadTexture("assets/tower.png");
+    this.towerTexture = Textures.asset(TexturesTypes.tower);
   }
 
   draw() {
