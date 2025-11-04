@@ -3,6 +3,8 @@ import Enemy from "../enemies/enemy";
 import { Projectile } from "./projectile";
 import { Textures, TexturesTypes } from "../utils/textures";
 
+export const TOWER_COST = 60;
+
 export class Tower {
   power: number = 1;
   position: r.Vector2 = { x: 0, y: 0 };

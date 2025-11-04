@@ -8,23 +8,23 @@ export class MainMenu {
   btnMargin = 20;
   titleSize = 60;
 
-  startBtn: r.Rectangle = { 
-    x: screenWidth / 2 - this.btnWidth / 2, 
-    y: screenHeight / 2 - 20, 
-    width: this.btnWidth, 
-    height: this.btnHeight 
+  startBtn: r.Rectangle = {
+    x: screenWidth / 2 - this.btnWidth / 2,
+    y: screenHeight / 2 - 20,
+    width: this.btnWidth,
+    height: this.btnHeight
   }
-  settingsBtn: r.Rectangle = { 
-    x: screenWidth / 2 - this.btnWidth / 2, 
-    y: this.startBtn.y + this.btnHeight + this.btnMargin, 
-    width: this.btnWidth, 
-    height: this.btnHeight 
+  settingsBtn: r.Rectangle = {
+    x: screenWidth / 2 - this.btnWidth / 2,
+    y: this.startBtn.y + this.btnHeight + this.btnMargin,
+    width: this.btnWidth,
+    height: this.btnHeight
   }
-  quitBtn: r.Rectangle = { 
-    x: screenWidth / 2 - this.btnWidth / 2, 
-    y: this.settingsBtn.y + this.btnHeight + this.btnMargin, 
-    width: this.btnWidth, 
-    height: this.btnHeight 
+  quitBtn: r.Rectangle = {
+    x: screenWidth / 2 - this.btnWidth / 2,
+    y: this.settingsBtn.y + this.btnHeight + this.btnMargin,
+    width: this.btnWidth,
+    height: this.btnHeight
   }
 
   constructor(private onStart: () => void) { }
@@ -40,15 +40,6 @@ export class MainMenu {
 
   private drawBackground() {
     r.DrawRectangle(0, 0, screenWidth, screenHeight, { r: 34, g: 139, b: 34, a: 255 });
-    
-    for (let i = 0; i < 15; i++) {
-      const x = Math.floor(Math.random() * screenWidth);
-      const y = Math.floor(Math.random() * screenHeight);
-      r.DrawCircle(x, y, 3, { r: 46, g: 125, b: 50, a: 100 });
-    }
-
-    r.DrawRectangle(50, screenHeight - 100, 150, 80, { r: 139, g: 69, b: 19, a: 255 });
-    r.DrawRectangle(screenWidth - 200, 80, 150, 80, { r: 139, g: 69, b: 19, a: 255 });
   }
 
   private drawTitle() {
@@ -62,10 +53,10 @@ export class MainMenu {
   }
 
   private drawButton(btn: r.Rectangle, text: string, isHovered: boolean) {
-    const bgColor = isHovered 
+    const bgColor = isHovered
       ? { r: 184, g: 134, b: 11, a: 255 }
       : { r: 139, g: 69, b: 19, a: 255 };
-    const borderColor = isHovered 
+    const borderColor = isHovered
       ? { r: 255, g: 215, b: 0, a: 255 }
       : { r: 101, g: 67, b: 33, a: 255 };
 

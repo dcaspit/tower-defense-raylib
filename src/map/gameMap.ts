@@ -3,6 +3,7 @@ import { screenHeight, screenWidth } from "../utils/consts";
 import { main_map } from "./maps";
 import Base from '../bases/base';
 import { Money } from "../utils/money";
+import { TOWER_COST } from "../towers/tower";
 
 export const boxWidth = 50;
 export const boxHeight = 50;
@@ -45,7 +46,7 @@ export default class GameMap {
         );
         // TODO: remove logic from draw
         // TODO: add remove tower logic
-        if (color === r.GREEN && pauseState && Money.enough(200) && !this.towersLocations.find((loc) => loc.col === col && loc.row === row)) {
+        if (color === r.GREEN && pauseState && Money.enough(TOWER_COST) && !this.towersLocations.find((loc) => loc.col === col && loc.row === row)) {
           // Check if mouse is hovering over this rectangle
           if (this.isMouseInRec(col, row)) {
             // Draw a semi-transparent white overlay for highlight
@@ -60,7 +61,7 @@ export default class GameMap {
             if (r.IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
               this.mouseClick({ x: col * boxWidth, y: topMargin + row * boxHeight });
               this.towersLocations.push({ col: col, row: row });
-              Money.decrease(200);
+              Money.decrease(TOWER_COST);
             }
           }
         }

@@ -1,7 +1,7 @@
 
 
 export class Money {
-  private static money: number = 2000;
+  private static money: number = 60;
 
   static get(): number {
     return this.money;

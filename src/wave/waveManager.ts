@@ -8,20 +8,20 @@ import { Money } from "../utils/money";
 
 export const waves = [
   {
+    totalEnemies: 5,
+    enemiesPerWave: 1,
+    waveTime: 10
+  },
+
+  {
     totalEnemies: 6,
-    enemiesPerWave: 3,
+    enemiesPerWave: 2,
     waveTime: 10
   },
 
   {
     totalEnemies: 8,
     enemiesPerWave: 4,
-    waveTime: 10
-  },
-
-  {
-    totalEnemies: 10,
-    enemiesPerWave: 5,
     waveTime: 10
   }
 ];
@@ -67,14 +67,16 @@ export default class WaveManager {
       }
       // onDeath
       if (enemy.health <= 0) {
-        Money.increase(50);
+        Money.increase(10);
       }
     });
 
     this.removeDeadEnemies();
-    const completed = this.wave.updateWave();
+    const completed = this.wave.completed();
     if (completed) {
       this.onWaveCompleted();
+    } else {
+      this.wave.updateWave();
     }
   }
 

@@ -55,7 +55,6 @@ export class Projectile {
       this.position.y + this.size >= this.enemy.pos.y
     ) {
       // Hit the target, handle collision
-      console.log('colide');
       this.enemy.takeDamage(5);
       this.state = 'reached';
       this.onProjectileHit();
