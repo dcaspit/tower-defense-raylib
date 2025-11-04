@@ -1,6 +1,7 @@
 import r from 'raylib';
 import { screenWidth } from '../utils/consts';
 import { Money } from '../utils/money';
+import { Wave } from '../wave/wave';
 
 export class TopPanel {
   bgWidth = screenWidth - 150;
@@ -8,16 +9,23 @@ export class TopPanel {
   position: r.Vector2 = { x: 0, y: 0 };
   goldPosition: r.Vector2 = { x: 20, y: 20 };
   wavePosition: r.Vector2 = { x: this.bgWidth - 50, y: 20 };
+  enemiesCountPosition: r.Vector2 = { x: this.wavePosition.x - 85, y: 20 }
   goldTexture: r.Texture2D;
 
   constructor(private totalWaves: number) {
     this.goldTexture = r.LoadTexture('assets/gold.png');
   }
 
-  draw(wave: number) {
+  draw(waveNumber: number, wave: Wave) {
     this.drawBG();
     this.drawMoney();
-    this.drawWaveCount(wave);
+    this.drawWaveCount(waveNumber);
+    this.drawEnemiesCount(wave);
+  }
+
+  drawEnemiesCount(wave: Wave) {
+    r.DrawText(`${wave.enemyCount}/${wave.wave.totalEnemies}`, this.enemiesCountPosition.x, this.enemiesCountPosition.y, 15, r.BLACK);
+    r.DrawText('Enemies: ', this.enemiesCountPosition.x - 60, this.enemiesCountPosition.y, 15, r.BLACK);
   }
 
   drawWaveCount(wave: number) {

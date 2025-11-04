@@ -7,7 +7,7 @@ export default class Enemy {
   healthBar: HealthBar;
   size = 40;
   texture: r.Texture;
-  health = 20;
+  health = 30;
   currentPathIndex: number = 0;
   reachedBase = false;
 

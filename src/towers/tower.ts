@@ -2,6 +2,7 @@ import r from "raylib";
 import Enemy from "../enemies/enemy";
 import { Projectile } from "./projectile";
 import { Textures, TexturesTypes } from "../utils/textures";
+import { GameClock } from "../utils/game-clock";
 
 export const TOWER_COST = 60;
 
@@ -9,7 +10,8 @@ export class Tower {
   power: number = 1;
   position: r.Vector2 = { x: 0, y: 0 };
   projectiles: Projectile[] = [];
-  state: "idle" | "aim" | "shooting" = "idle";
+  state: "idle" | "shooting" = "idle";
+  countState: boolean = false;
   towerTexture: r.Texture;
   towerSize = 50;
 
@@ -51,7 +53,7 @@ export class Tower {
 
   isEnemyWithinTowerRange(enemies: Enemy[]): Projectile | null {
     // If projectile is already fired, keep tracking current target
-    if (this.state === "shooting") return null;
+    if (this.state === "shooting" || this.countState) return null;
 
     const projectiles: Projectile[] = [];
     // Find closest enemy within range
@@ -71,7 +73,12 @@ export class Tower {
       }
     }
 
-    if (closestEnemy && this.state === 'idle') {
+    if (closestEnemy && this.state === 'idle' && !this.countState) {
+      this.countState = true;
+      GameClock.count(2, () => {
+        this.countState = false;
+      });
+
       this.state = "shooting";
       return new Projectile(closestEnemy, { x: towerCenterX, y: towerCenterY }, () => {
         this.state = 'idle';

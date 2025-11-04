@@ -7,15 +7,20 @@ export class Wave {
   private enemiesSpawned: number = 0;
   private lastSpawnTime: number = -1;
   private waveStartTime: number = 0;
-  private enemyCount = 0;
+  enemyCount = 0;
 
-  constructor(private wave: { totalEnemies: number, enemiesPerWave: number, waveTime: number }) {
+  constructor(public wave: { totalEnemies: number, enemiesPerWave: number, waveTime: number }) {
     this.enemies = [];
     this.waveStartTime = GameClock.getTime();
   }
 
   completed(): boolean {
-    return this.enemyCount >= this.wave.totalEnemies && this.enemies.length === 0;
+    if (this.enemyCount >= this.wave.totalEnemies) {
+      if (this.enemies.length === 0) {
+        return true;
+      }
+    }
+    return false;
   }
 
   updateWave() {
@@ -34,9 +39,11 @@ export class Wave {
 
     if (timeSinceWaveStart >= this.wave.waveTime) { // 5 seconds spawning + 5 seconds waiting
       // Reset for next wave
-      this.waveState = 'spawning';
-      this.enemiesSpawned = 0;
-      this.waveStartTime = currentSecond;
+      if (this.enemyCount < this.wave.totalEnemies) {
+        this.waveState = 'spawning';
+        this.enemiesSpawned = 0;
+        this.waveStartTime = currentSecond;
+      }
     }
   }
 

@@ -14,6 +14,7 @@ export class GameClock {
     if (this.sixtyFramesPassed()) {
       this.frameCount = 0;
       this.seconds++;
+      console.log('Time: ', this.seconds);
 
       // Trigger callbacks registered for this second
       const secondCallbacks = this.callbacks.get(this.seconds);

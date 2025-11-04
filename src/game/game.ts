@@ -88,7 +88,7 @@ export class Game {
     }
 
     this.rightPanel.draw(this.pause);
-    this.topPanel.draw(this.waveMgr.waveNumber());
+    this.topPanel.draw(this.waveMgr.waveNumber(), this.waveMgr.wave);
   }
 
   private drawWave() {
