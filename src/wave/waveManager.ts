@@ -8,7 +8,7 @@ import { Money } from "../utils/money";
 
 export const waves = [
   {
-    totalEnemies: 5,
+    totalEnemies: 6,
     enemiesPerWave: 1,
     waveTime: 10
   },

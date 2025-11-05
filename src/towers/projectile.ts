@@ -17,6 +17,7 @@ export class Projectile {
       this.state = 'reached';
       return;
     }
+
     const dest = {
       x: this.position.x - this.size / 2,
       y: this.position.y - this.size / 2,
@@ -29,6 +30,7 @@ export class Projectile {
       width: this.texture.width,
       height: this.texture.height,
     };
+
     r.DrawTexturePro(
       this.texture,
       src,
@@ -40,6 +42,22 @@ export class Projectile {
   }
 
   updateProjectile() {
+
+    // Aim at the center of the enemy for better accuracy
+    const targetCenterX = this.enemy.pos.x + this.enemy.size / 2;
+    const targetCenterY = this.enemy.pos.y + this.enemy.size / 2;
+    const dx = targetCenterX - this.position.x;
+    const dy = targetCenterY - this.position.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const directionX = dx / distance;
+    const directionY = dy / distance;
+
+    const projectileSpeed = 1.0; // adjust speed as needed
+
+    // Move projectile using the calculated direction
+    this.position.x += directionX * projectileSpeed;
+    this.position.y += directionY * projectileSpeed;
+
     if (!this.enemy || this.enemy.health <= 0) {
       this.onProjectileHit();
       this.state = 'reached';
@@ -60,21 +78,6 @@ export class Projectile {
       this.onProjectileHit();
       return;
     }
-
-    // Aim at the center of the enemy for better accuracy
-    const targetCenterX = this.enemy.pos.x + this.enemy.size / 2;
-    const targetCenterY = this.enemy.pos.y + this.enemy.size / 2;
-    const dx = targetCenterX - this.position.x;
-    const dy = targetCenterY - this.position.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    const directionX = dx / distance;
-    const directionY = dy / distance;
-
-    const projectileSpeed = 1.0; // adjust speed as needed
-
-    // Move projectile using the calculated direction
-    this.position.x += directionX * projectileSpeed;
-    this.position.y += directionY * projectileSpeed;
   }
 
 }
