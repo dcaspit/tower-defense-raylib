@@ -1,12 +1,19 @@
+const Grounds = {
+  Grass: 1,
+  Road: 2,
+  Water: 3,
+  GrassTree: 4,
+} as const;
+
 export const main_map = [
-  [1, 1, 1, 1, 1, 1, 3, 1, 4, 1],
-  [1, 1, 1, 1, 2, 2, 2, 2, 2, 1],
-  [2, 2, 1, 1, 2, 1, 3, 1, 2, 1],
-  [1, 2, 1, 1, 2, 1, 3, 1, 2, 1],
-  [1, 2, 2, 2, 2, 1, 3, 1, 2, 1],
-  [1, 1, 4, 4, 1, 1, 3, 1, 2, 1],
-  [1, 1, 4, 4, 1, 1, 3, 1, 2, 1],
-  [1, 1, 4, 4, 1, 1, 3, 1, 2, 1],
-  [2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-  [1, 1, 1, 1, 1, 1, 3, 1, 1, 1],
+  [Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.GrassTree, Grounds.Grass],
+  [Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Grass],
+  [Grounds.Road, Grounds.Road, Grounds.Grass, Grounds.Grass, Grounds.Road, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Road, Grounds.Grass],
+  [Grounds.Grass, Grounds.Road, Grounds.Grass, Grounds.Grass, Grounds.Road, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Road, Grounds.Grass],
+  [Grounds.Grass, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Road, Grounds.Grass],
+  [Grounds.Grass, Grounds.Grass, Grounds.GrassTree, Grounds.GrassTree, Grounds.Grass, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Road, Grounds.Grass],
+  [Grounds.Grass, Grounds.Grass, Grounds.GrassTree, Grounds.GrassTree, Grounds.Grass, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Road, Grounds.Grass],
+  [Grounds.Grass, Grounds.Grass, Grounds.GrassTree, Grounds.GrassTree, Grounds.Grass, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Road, Grounds.Grass],
+  [Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Grass],
+  [Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Grass, Grounds.Grass],
 ];
