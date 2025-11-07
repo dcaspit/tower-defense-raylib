@@ -4,7 +4,8 @@ export const TexturesTypes = {
   projectile: 'projectile',
   enemy: 'enemy',
   tower: 'tower',
-  slime: 'slime'
+  slime: 'slime',
+  grass: 'grass'
 } as const;
 
 export class Textures {
@@ -15,6 +16,7 @@ export class Textures {
     this.map.set(TexturesTypes.enemy, r.LoadTexture('assets/enemy.png'));
     this.map.set(TexturesTypes.tower, r.LoadTexture('assets/tower.png'));
     this.map.set(TexturesTypes.slime, r.LoadTexture('assets/MiniWorldSprites/Characters/Monsters/Slimes/Slime.png'));
+    this.map.set(TexturesTypes.grass, r.LoadTexture('assets/MiniWorldSprites/Grounds/TexturedGrass.png'));
 
   }
 
