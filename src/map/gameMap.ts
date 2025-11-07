@@ -1,6 +1,6 @@
 import r, { MOUSE_BUTTON_LEFT } from "raylib";
 import { screenHeight, screenWidth } from "../utils/consts";
-import { main_map } from "./maps";
+import { Ground, main_map } from "./maps";
 import Base from '../bases/base';
 import { Money } from "../utils/money";
 import { TOWER_COST } from "../towers/tower";
@@ -26,7 +26,7 @@ export default class GameMap {
     for (let row = 0; row < main_map.length; row++) {
       for (let col = 0; col < main_map[row].length; col++) {
         let color: r.Color = r.GRAY;
-        if (main_map[row][col] === 1) {
+        if (main_map[row][col] === Ground.Grass) {
           color = r.GREEN;
         } else if (main_map[row][col] === 2) {
           // Path

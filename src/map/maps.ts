@@ -1,4 +1,4 @@
-const Grounds = {
+export const Ground = {
   Grass: 1,
   Road: 2,
   Water: 3,
@@ -6,14 +6,14 @@ const Grounds = {
 } as const;
 
 export const main_map = [
-  [Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.GrassTree, Grounds.Grass],
-  [Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Grass],
-  [Grounds.Road, Grounds.Road, Grounds.Grass, Grounds.Grass, Grounds.Road, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Road, Grounds.Grass],
-  [Grounds.Grass, Grounds.Road, Grounds.Grass, Grounds.Grass, Grounds.Road, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Road, Grounds.Grass],
-  [Grounds.Grass, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Road, Grounds.Grass],
-  [Grounds.Grass, Grounds.Grass, Grounds.GrassTree, Grounds.GrassTree, Grounds.Grass, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Road, Grounds.Grass],
-  [Grounds.Grass, Grounds.Grass, Grounds.GrassTree, Grounds.GrassTree, Grounds.Grass, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Road, Grounds.Grass],
-  [Grounds.Grass, Grounds.Grass, Grounds.GrassTree, Grounds.GrassTree, Grounds.Grass, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Road, Grounds.Grass],
-  [Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Road, Grounds.Grass],
-  [Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Grass, Grounds.Water, Grounds.Grass, Grounds.Grass, Grounds.Grass],
+  [Ground.Grass, Ground.Grass, Ground.Grass, Ground.Grass, Ground.Grass, Ground.Grass, Ground.Water, Ground.Grass, Ground.GrassTree, Ground.Grass],
+  [Ground.Grass, Ground.Grass, Ground.Grass, Ground.Grass, Ground.Road, Ground.Road, Ground.Road, Ground.Road, Ground.Road, Ground.Grass],
+  [Ground.Road, Ground.Road, Ground.Grass, Ground.Grass, Ground.Road, Ground.Grass, Ground.Water, Ground.Grass, Ground.Road, Ground.Grass],
+  [Ground.Grass, Ground.Road, Ground.Grass, Ground.Grass, Ground.Road, Ground.Grass, Ground.Water, Ground.Grass, Ground.Road, Ground.Grass],
+  [Ground.Grass, Ground.Road, Ground.Road, Ground.Road, Ground.Road, Ground.Grass, Ground.Water, Ground.Grass, Ground.Road, Ground.Grass],
+  [Ground.Grass, Ground.Grass, Ground.GrassTree, Ground.GrassTree, Ground.Grass, Ground.Grass, Ground.Water, Ground.Grass, Ground.Road, Ground.Grass],
+  [Ground.Grass, Ground.Grass, Ground.GrassTree, Ground.GrassTree, Ground.Grass, Ground.Grass, Ground.Water, Ground.Grass, Ground.Road, Ground.Grass],
+  [Ground.Grass, Ground.Grass, Ground.GrassTree, Ground.GrassTree, Ground.Grass, Ground.Grass, Ground.Water, Ground.Grass, Ground.Road, Ground.Grass],
+  [Ground.Road, Ground.Road, Ground.Road, Ground.Road, Ground.Road, Ground.Road, Ground.Road, Ground.Road, Ground.Road, Ground.Grass],
+  [Ground.Grass, Ground.Grass, Ground.Grass, Ground.Grass, Ground.Grass, Ground.Grass, Ground.Water, Ground.Grass, Ground.Grass, Ground.Grass],
 ];
