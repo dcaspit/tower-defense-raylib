@@ -1,6 +1,7 @@
 import r from "raylib";
 import HealthBar from './healthBar';
 import { Textures, TexturesTypes } from "../utils/textures";
+import { GameClock } from "../utils/game-clock";
 
 export default class Enemy {
   pos: r.Vector2 = { x: 0, y: 0 };
@@ -10,10 +11,17 @@ export default class Enemy {
   health = 30;
   currentPathIndex: number = 0;
   reachedBase = false;
+  frameWidth: number = 0;
+  frameHeight: number = 0;
+  frameRec: r.Rectangle = { x: 0, y: 0, height: 0, width: 0 };
 
   constructor(public index: number) {
     this.healthBar = new HealthBar(this.health);
-    this.texture = Textures.asset(TexturesTypes.enemy);
+    this.texture = Textures.asset(TexturesTypes.slime);
+
+    this.frameWidth = this.texture.width / 6;
+    this.frameHeight = this.texture.height / 6;
+    this.frameRec = { x: 0, y: 0, width: this.frameWidth, height: this.frameHeight };
   }
 
   takeDamage(power: number) {
@@ -32,9 +40,23 @@ export default class Enemy {
     this.drawEnemyTexture();
   }
 
+  currentFrame = 0;
+  frameCounter = 0;
+
   drawEnemyTexture() {
     //r.DrawRectangle(this.pos.x, this.pos.y, 10, 10, r.RED);
     //return;
+
+    this.frameCounter += r.GetFrameTime() * 10;
+    if (this.frameCounter >= 1) {
+      this.currentFrame++;
+      this.frameCounter = 0;
+      if (this.currentFrame > 5) {
+        this.currentFrame = 0;
+      }
+    }
+
+    // frameRec.x = currentFrame * frameWidth;
     const dest = {
       x: this.pos.x,
       y: this.pos.y,
@@ -42,18 +64,13 @@ export default class Enemy {
       height: this.size,
     };
     const src = {
-      x: 0,
+      x: this.currentFrame * this.frameWidth,
       y: 0,
-      width: this.texture.width,
-      height: this.texture.height,
+      width: this.frameWidth,
+      height: this.frameHeight,
     };
-    r.DrawTexturePro(
-      this.texture,
-      src,
-      dest,
-      { x: 0, y: 0 },
-      0,
-      r.WHITE,
-    );
+    //this.frameRec.x = (GameClock.getSeconds() % 6) * this.frameWidth;
+    //r.DrawTextureRec(this.texture, this.frameRec, this.pos, r.WHITE);
+    r.DrawTexturePro(this.texture, src, dest, { x: 0, y: 0 }, 0, r.WHITE);
   }
 }

@@ -3,7 +3,8 @@ import r from 'raylib';
 export const TexturesTypes = {
   projectile: 'projectile',
   enemy: 'enemy',
-  tower: 'tower'
+  tower: 'tower',
+  slime: 'slime'
 } as const;
 
 export class Textures {
@@ -13,6 +14,8 @@ export class Textures {
     this.map.set(TexturesTypes.projectile, r.LoadTexture('assets/projectile.png'));
     this.map.set(TexturesTypes.enemy, r.LoadTexture('assets/enemy.png'));
     this.map.set(TexturesTypes.tower, r.LoadTexture('assets/tower.png'));
+    this.map.set(TexturesTypes.slime, r.LoadTexture('assets/MiniWorldSprites/Characters/Monsters/Slimes/Slime.png'));
+
   }
 
   static asset(name: string): r.Texture {

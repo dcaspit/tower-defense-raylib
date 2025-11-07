@@ -6,6 +6,10 @@ export class GameClock {
   private static framesPerMove: number = 60;
   private static callbacks: Map<number, (() => void)[]> = new Map();
 
+  static getSeconds(): number {
+    return this.seconds;
+  }
+
   static startTick() {
     this.frameCount++;
   }

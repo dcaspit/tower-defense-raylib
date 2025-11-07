@@ -25,32 +25,11 @@ function main() {
     game = new Game(onGameOver);
   });
 
-  let spritesheet = r.LoadTexture('assets/MiniWorldSprites/Characters/Monsters/Slimes/Slime.png');
-  let frameWidth = spritesheet.width / 6;
-  let frameHeight = spritesheet.height / 6;
-
-  let frameRec: r.Rectangle = { x: 0, y: 0, width: frameWidth, height: frameHeight };
-  let pos: r.Vector2 = { x: 50, y: 10 };
-  let currentFrame = 0;
-  let frameCounter = 0;
-  let frameSpeed = 10.0;
-
 
   while (!r.WindowShouldClose()) {
-    
+
     r.BeginDrawing();
     r.ClearBackground(r.RAYWHITE);
-
-    //frameCounter += r.GetFrameTime() * frameSpeed;
-    //if(frameCounter >= 1) {
-    //  currentFrame++;
-    //  frameCounter = 0;
-    //  if(currentFrame > 5) {
-    //    currentFrame = 0;
-    //  }
-    //}
-    
-   // frameRec.x = currentFrame * frameWidth;
 
     if (state === 'menu') {
       menu.draw();
@@ -62,8 +41,7 @@ function main() {
       game.draw();
     }
 
-    
-    //r.DrawTextureRec(spritesheet, frameRec, pos, r.WHITE);
+
 
     r.EndDrawing();
   }
