@@ -41,8 +41,6 @@ function main() {
       game.draw();
     }
 
-
-
     r.EndDrawing();
   }
 

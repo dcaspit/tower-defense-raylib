@@ -4,6 +4,7 @@ import { Ground, main_map } from "./maps";
 import Base from '../bases/base';
 import { Money } from "../utils/money";
 import { TOWER_COST } from "../towers/tower";
+import { Textures, TexturesTypes } from "../utils/textures";
 
 export const boxWidth = 50;
 export const boxHeight = 50;
@@ -14,12 +15,22 @@ export default class GameMap {
   enemyPathIntialized: boolean = false;
   towersLocations: { col: number, row: number }[] = [];
   base: Base;
+  grass: r.Texture;
+  grassWidth: number;
+  grassHeight: number;
+  grassRec: r.Rectangle;
 
   constructor(private mouseClick: (pos: r.Vector2) => void,
     private onBaseDeath: () => void) {
     this.enemyPath = [];
     this.base = new Base(this.onBaseDeath);
     this.parseEnemyPath();
+
+    this.grass = Textures.asset(TexturesTypes.grass);
+    this.grassWidth = this.grass.width / 3;
+    this.grassHeight = this.grass.height / 2;
+    console.log(`grassWidth: ${this.grassWidth}, grassHeight: ${this.grassHeight}`);
+    this.grassRec = { x: this.grassWidth, y: this.grassHeight, width: this.grassWidth, height: this.grassHeight };
   }
 
   drawMap(pauseState: boolean) {
@@ -28,6 +39,20 @@ export default class GameMap {
         let color: r.Color = r.GRAY;
         if (main_map[row][col] === Ground.Grass) {
           color = r.GREEN;
+          const pos = { x: col * boxWidth, y: topMargin + row * boxHeight }
+          const dest = {
+            x: pos.x,
+            y: pos.y,
+            width: 50,
+            height: 50,
+          };
+          const src = {
+            x: this.grassWidth,
+            y: this.grassHeight,
+            width: this.grassWidth,
+            height: this.grassHeight,
+          };
+          r.DrawTexturePro(this.grass, src, dest, { x: 0, y: 0 }, 0, r.WHITE);
         } else if (main_map[row][col] === 2) {
           // Path
           color = r.BROWN;
@@ -37,15 +62,17 @@ export default class GameMap {
           color = r.GRAY;
         }
 
-        r.DrawRectangle(
-          col * boxWidth,
-          topMargin + row * boxHeight,
-          boxWidth,
-          boxHeight,
-          color,
-        );
-        // TODO: remove logic from draw
+        if (color !== r.GREEN) {
+          r.DrawRectangle(
+            col * boxWidth,
+            topMargin + row * boxHeight,
+            boxWidth,
+            boxHeight,
+            color,
+          );
+        }
         // TODO: add remove tower logic
+        // TODO: remove logic from draw
         if (color === r.GREEN && pauseState && Money.enough(TOWER_COST) && !this.towersLocations.find((loc) => loc.col === col && loc.row === row)) {
           // Check if mouse is hovering over this rectangle
           if (this.isMouseInRec(col, row)) {
