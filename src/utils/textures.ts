@@ -16,7 +16,7 @@ export class Textures {
     this.map.set(TexturesTypes.enemy, r.LoadTexture('assets/enemy.png'));
     this.map.set(TexturesTypes.tower, r.LoadTexture('assets/tower.png'));
     this.map.set(TexturesTypes.slime, r.LoadTexture('assets/MiniWorldSprites/Characters/Monsters/Slimes/Slime.png'));
-    this.map.set(TexturesTypes.grass, r.LoadTexture('assets/MiniWorldSprites/Ground/TexturedGrass.png'));
+    this.map.set(TexturesTypes.grass, r.LoadTexture('assets/MiniWorldSprites/Ground/Grass.png'));
   }
 
   static asset(name: string): r.Texture {

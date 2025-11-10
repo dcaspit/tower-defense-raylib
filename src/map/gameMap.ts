@@ -18,7 +18,6 @@ export default class GameMap {
   grass: r.Texture;
   grassWidth: number;
   grassHeight: number;
-  grassRec: r.Rectangle;
 
   constructor(private mouseClick: (pos: r.Vector2) => void,
     private onBaseDeath: () => void) {
@@ -27,10 +26,9 @@ export default class GameMap {
     this.parseEnemyPath();
 
     this.grass = Textures.asset(TexturesTypes.grass);
-    this.grassWidth = this.grass.width / 3;
-    this.grassHeight = this.grass.height / 2;
+    this.grassWidth = this.grass.width / 5;
+    this.grassHeight = this.grass.height;
     console.log(`grassWidth: ${this.grassWidth}, grassHeight: ${this.grassHeight}`);
-    this.grassRec = { x: this.grassWidth, y: this.grassHeight, width: this.grassWidth, height: this.grassHeight };
   }
 
   drawMap(pauseState: boolean) {
@@ -38,31 +36,13 @@ export default class GameMap {
       for (let col = 0; col < main_map[row].length; col++) {
         let color: r.Color = r.GRAY;
         if (main_map[row][col] === Ground.Grass) {
-          color = r.GREEN;
-          const pos = { x: col * boxWidth, y: topMargin + row * boxHeight }
-          const dest = {
-            x: pos.x,
-            y: pos.y,
-            width: 50,
-            height: 50,
-          };
-          const src = {
-            x: this.grassWidth,
-            y: this.grassHeight,
-            width: this.grassWidth,
-            height: this.grassHeight,
-          };
-          r.DrawTexturePro(this.grass, src, dest, { x: 0, y: 0 }, 0, r.WHITE);
-        } else if (main_map[row][col] === 2) {
-          // Path
-          color = r.BROWN;
-        } else if (main_map[row][col] === 3) {
-          color = r.BLUE;
+          this.drawGround(col, row, this.grassWidth * 2);
+          color = r.GREEN; // TODO: Change this color to state in order to support placing towers below
+        } else if (main_map[row][col] === Ground.Road) {
+          this.drawGround(col, row, this.grassWidth * 3);
+        } else if (main_map[row][col] === Ground.Water) {
+          this.drawGround(col, row, 0);
         } else if (main_map[row][col] === 4) {
-          color = r.GRAY;
-        }
-
-        if (color !== r.GREEN) {
           r.DrawRectangle(
             col * boxWidth,
             topMargin + row * boxHeight,
@@ -71,6 +51,7 @@ export default class GameMap {
             color,
           );
         }
+
         // TODO: add remove tower logic
         // TODO: remove logic from draw
         if (color === r.GREEN && pauseState && Money.enough(TOWER_COST) && !this.towersLocations.find((loc) => loc.col === col && loc.row === row)) {
@@ -109,6 +90,23 @@ export default class GameMap {
       const endPosition = this.enemyPath[this.enemyPath.length - 1];
       this.base.draw(endPosition);
     }
+  }
+
+  drawGround(col: number, row: number, x: number) {
+    const pos = { x: col * boxWidth, y: topMargin + row * boxHeight }
+    const dest = {
+      x: pos.x,
+      y: pos.y,
+      width: 50,
+      height: 50,
+    };
+    const src = {
+      x: x,
+      y: this.grassHeight,
+      width: this.grassWidth,
+      height: this.grassHeight,
+    };
+    r.DrawTexturePro(this.grass, src, dest, { x: 0, y: 0 }, 0, r.WHITE);
   }
 
   isMouseInRec(col: number, row: number): boolean {
