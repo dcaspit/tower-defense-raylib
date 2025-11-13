@@ -5,7 +5,7 @@ import { Wave } from '../wave/wave';
 
 export class TopPanel {
   bgWidth = screenWidth - 150;
-  bgHeight = 50; // topMargin
+  bgHeight = 80; // topMargin
   position: r.Vector2 = { x: 0, y: 0 };
   goldPosition: r.Vector2 = { x: 20, y: 20 };
   wavePosition: r.Vector2 = { x: this.bgWidth - 50, y: 20 };

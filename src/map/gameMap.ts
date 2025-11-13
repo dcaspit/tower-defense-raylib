@@ -8,7 +8,7 @@ import { Textures, TexturesTypes } from "../utils/textures";
 
 export const boxWidth = 50;
 export const boxHeight = 50;
-export const topMargin = 50;
+export const topMargin = 80;
 
 export default class GameMap {
   enemyPath: r.Vector2[];

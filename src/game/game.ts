@@ -106,8 +106,8 @@ export class Game {
       tower.draw();
     });
     if (this.waveCompleted) {
-      r.DrawRectangle(screenHeight / 2 - 50, screenWidth / 2 - 25, 100, 50, r.RED);
-      r.DrawText('Wave Completed', (screenHeight / 2 - 50) + 10, (screenWidth / 2 - 50) + 20, 15, r.BLACK);
+      r.DrawRectangle(screenWidth / 2 - 50, screenHeight / 2 - 25, 100, 50, r.RED);
+      r.DrawText('Wave Completed', (screenWidth / 2 - 50) + 10, (screenHeight / 2 - 25) + 20, 15, r.BLACK);
     }
   }
 
