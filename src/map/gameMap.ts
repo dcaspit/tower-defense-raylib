@@ -15,9 +15,14 @@ export default class GameMap {
   enemyPathIntialized: boolean = false;
   towersLocations: { col: number, row: number }[] = [];
   base: Base;
+
   grass: r.Texture;
   grassWidth: number;
   grassHeight: number;
+
+  tree: r.Texture;
+  treeWidth: number;
+  treeHeight: number;
 
   constructor(private mouseClick: (pos: r.Vector2) => void,
     private onBaseDeath: () => void) {
@@ -28,7 +33,10 @@ export default class GameMap {
     this.grass = Textures.asset(TexturesTypes.grass);
     this.grassWidth = this.grass.width / 5;
     this.grassHeight = this.grass.height;
-    console.log(`grassWidth: ${this.grassWidth}, grassHeight: ${this.grassHeight}`);
+
+    this.tree = Textures.asset(TexturesTypes.tree);
+    this.treeWidth = this.tree.width / 4;
+    this.treeHeight = this.tree.height;
   }
 
   drawMap(pauseState: boolean) {
@@ -37,6 +45,7 @@ export default class GameMap {
         let color: r.Color = r.GRAY;
         if (main_map[row][col] === Ground.Grass) {
           this.drawGround(col, row, this.grassWidth * 2);
+          this.drawTree(col, row, this.treeWidth);
           color = r.GREEN; // TODO: Change this color to state in order to support placing towers below
         } else if (main_map[row][col] === Ground.Road) {
           this.drawGround(col, row, this.grassWidth * 3);
@@ -107,6 +116,23 @@ export default class GameMap {
       height: this.grassHeight,
     };
     r.DrawTexturePro(this.grass, src, dest, { x: 0, y: 0 }, 0, r.WHITE);
+  }
+
+  drawTree(col: number, row: number, x: number) {
+    const pos = { x: col * boxWidth, y: topMargin + row * boxHeight }
+    const dest = {
+      x: pos.x,
+      y: pos.y,
+      width: 50,
+      height: 50,
+    };
+    const src = {
+      x: x,
+      y: this.treeHeight,
+      width: this.treeWidth,
+      height: this.treeHeight,
+    };
+    r.DrawTexturePro(this.tree, src, dest, { x: 0, y: 0 }, 0, r.WHITE);
   }
 
   isMouseInRec(col: number, row: number): boolean {

@@ -27,7 +27,6 @@ function main() {
 
 
   while (!r.WindowShouldClose()) {
-
     r.BeginDrawing();
     r.ClearBackground(r.RAYWHITE);
 
