@@ -45,20 +45,14 @@ export default class GameMap {
         let color: r.Color = r.GRAY;
         if (main_map[row][col] === Ground.Grass) {
           this.drawGround(col, row, this.grassWidth * 2);
-          this.drawTree(col, row, this.treeWidth);
           color = r.GREEN; // TODO: Change this color to state in order to support placing towers below
         } else if (main_map[row][col] === Ground.Road) {
           this.drawGround(col, row, this.grassWidth * 3);
         } else if (main_map[row][col] === Ground.Water) {
           this.drawGround(col, row, 0);
         } else if (main_map[row][col] === 4) {
-          r.DrawRectangle(
-            col * boxWidth,
-            topMargin + row * boxHeight,
-            boxWidth,
-            boxHeight,
-            color,
-          );
+          this.drawGround(col, row, this.grassWidth * 2);
+          this.drawTree(col, row, this.treeWidth);
         }
 
         // TODO: add remove tower logic
